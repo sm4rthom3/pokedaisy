@@ -306,7 +306,7 @@ shows a "not supported" notice).
 | Sapphire                       | USA, rev 0, 1 and 2        |  ✅   | ✅  |   ◐    | ✅  |   ✅    |  ✅   |
 | Sapphire                       | ES/DE/FR/IT/JP, rev 0-1    |  ✅   | ✅  |   ◐    | ✅  |   ✅    |  ✅   |
 | Platinum (DS)                  | USA rev 1                  |  ✅   | ✅  |   ◐    | ✅  |   ✅    |  ✅   |
-| HeartGold (DS)                 | USA                        |  ✅   | ✅  |   —    | ✅  |   ✅    |  ✅   |
+| HeartGold (DS)                 | USA, Germany               |  ✅   | ✅  |   —    | ✅  |   ✅    |  ✅   |
 | SoulSilver (DS)                | USA                        |  ✅   | ✅  |   —    | ✅  |   ✅    |  ✅   |
 | Unbound                        | 2.1.1.1                    |  ✅   | ✅  |   ◐    | ✅  |   ✅    |  ✅   |
 | Unbound                        | 2.1.1.1 French             |  ✅   | ✅  |   ◐    | ✅  |   ✅    |  ✅   |
@@ -354,7 +354,7 @@ shows its own Pokémon, moves, types, six town maps and its own Pokédex (its 25
 Crystal shows its own Pokémon (regional forms included), moves, types, items, its Johto, Kanto and Orange Islands maps and
 its 289 in National order; its faithful builds keep the original games' types and moves, as the game does.
 Platinum, HeartGold and SoulSilver are the DS games the companion reads, in the USA release listed (Platinum's
-revision 1); their pictures, Pokédex pages and maps come from your cart. Platinum's battles show in the BATTLE tab,
+revision 1), plus German HeartGold (IPKD rev 0). Their pictures, names, Pokédex pages and maps come from your cart. Platinum's battles show in the BATTLE tab,
 HeartGold's and SoulSilver's not yet, and on the DS the battle buttons don't press the game's menus yet. On a
 one-screen device a DS game shows its top screen; the touch screen needs a second screen for now.
 Team Rocket Dragonsden is DragonsdenTV's Team Rocket Edition: Dragonsden Version, not FireRed Rocket Edition; its
