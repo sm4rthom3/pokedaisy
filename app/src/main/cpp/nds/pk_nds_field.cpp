@@ -51,6 +51,26 @@ static const PkNdsFieldGame HEARTGOLD_US = {
     0x08,         // BattleContext.command (5 at the command menus, 22 running a move's script: headless dumps)
 };
 
+// German HeartGold, IPKD rev 0 (SHA-1 13b6853a…): ARM9's SaveData / FieldSystem and sound literal pools,
+// gOverlayTemplate_Battle's reference in sub_02087C38, and overlay 1's field-map template. Structs and the
+// callSet 2 function addresses are shared with the US carts (checked against the German ARM9).
+static const PkNdsFieldGame HEARTGOLD_DE = {
+    "HeartGold (Germany)",
+    0x021D4138,   // sFieldSysPtr
+    0x020FA438,   // gOverlayTemplate_Battle
+    0x00, 0x10, 0x40, 0x6C,
+    0x18,
+    0x14, 0x920, 0x921,
+    0x20,
+    0x021E5BC5,   // ov01_02206378's main in German overlay 1
+    0x021D0534,   // sSoundWork (0x02111938) + 0xBEBFC
+    0x021DF964,   // sSeqPlayer
+    1,
+    2,
+    0x30,
+    0x08,
+};
+
 // WILD ENCOUNTERS OFF's hold: the MapHeaderData whose rates it zeroed, for which map, and their values before.
 static uint32_t heldData, heldMap, heldGrass, heldSurf;
 static int holding;
@@ -75,6 +95,7 @@ const PkNdsFieldGame* pk_nds_field_game(const char code[4], int revision)
 {
     if (memcmp(code, "CPUE", 4) == 0 && revision == 1) return &PLATINUM_US_REV1;
     if ((memcmp(code, "IPKE", 4) == 0 || memcmp(code, "IPGE", 4) == 0) && revision == 0) return &HEARTGOLD_US;
+    if (memcmp(code, "IPKD", 4) == 0 && revision == 0) return &HEARTGOLD_DE;
     return 0;
 }
 

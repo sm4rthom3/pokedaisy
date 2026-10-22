@@ -87,7 +87,7 @@ object NdsArt {
         val code = String(header, 0x0C, 4, Charsets.US_ASCII)
         val rev = header[0x1E].toInt() and 0xFF
         val platinum = code == "CPUE" && rev == 1
-        val heartGold = (code == "IPKE" || code == "IPGE") && rev == 0
+        val heartGold = (code == "IPKE" || code == "IPKD" || code == "IPGE") && rev == 0
         if (!platinum && !heartGold) return false
         val marker = File(dir, if (platinum) "nds/platinum-built" else "nds/heartgold-built")
         val stamp = "v$VERSION $code $rev"
@@ -348,7 +348,7 @@ object NdsArt {
         val rev = header[0x1E].toInt() and 0xFF
         val banks = when {
             code == "CPUE" && rev == 1 -> NAMES_PLATINUM
-            (code == "IPKE" || code == "IPGE") && rev == 0 -> NAMES_HEARTGOLD
+            (code == "IPKE" || code == "IPKD" || code == "IPGE") && rev == 0 -> NAMES_HEARTGOLD
             else -> return null
         }
         val msg = Narc(file(f, header, banks.msg) ?: return null)
