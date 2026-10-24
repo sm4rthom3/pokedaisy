@@ -406,7 +406,6 @@ fun decodeGen2BattleMon(raw: ByteArray, speciesCount: Int = 251): BattleMon? {
 }
 
 private const val BATTLE_MENU_TOP = 0x0E      // BattleMenu's _2DMenu: 2 x 2 from (9, 14), 6 across / 2 down
-private const val BATTLE_MENU_LEFT = 0x09
 private const val MOVE_MENU_TOP = 0x0D        // MoveSelectionScreen: a column from (5, 13)
 private const val MOVE_MENU_LEFT = 0x05
 

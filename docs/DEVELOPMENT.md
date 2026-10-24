@@ -2094,7 +2094,7 @@ pushing a different file (only one at a time for now). SRAM persists to
 
 The German Red / Blue carts are pinned by SHA-1 in `TelemetrySampler`: `87d523fe…` / `20e72dc6…`.
 Their WRAM from the enemy battler upwards is English's +5 bytes, verified by the operands in both carts
-(`scripts/port_gen1.py`). Their species, move and item names match German Yellow's. Their own metric
+(`scripts/port_gen1.py`). Their species, move and item names match German Yellow's; the town map keeps the shorter Rocket HQ label. Their own metric
 Pokédex pages and sprite / palette tables are `POKEDEX_RED_DE` / `POKEDEX_BLUE_DE`; `Gen1Art` maps the
 moved town map / icon tables and extracts each cart's font. `GB_FIELD_RED_BLUE_DE` carries their checked
 PC / Fly / encounter signatures.
@@ -2116,3 +2116,9 @@ Unknown revisions stay unsupported. No ROMs, saves or new RAM captures are distr
 `GermanRetailTest` checks regional menus and existing public fixtures without ROMs. With `POKEDAISY_ROM_DIR`
 pointing to the local `gba` directory (sibling directories `gb`, `gbc`, `nds`), it also checks the owned
 German carts' names, every Gen 1 / Gen 2 dex page and sprite, art extraction and field signatures.
+
+Local headless smoke checks on the German carts: Platinum reached its bedroom with field state `0x181`;
+the PC job ran in two frames and opened the German dialog (`0x18B` while its task was active).
+Crystal reached its bedroom, opened the PC through its script queue, and EXPAND reproduced the middle
+screen exactly on 120 checked frames (no torn / unverified frames). These are smoke checks; full playthroughs
+and unlocked Fly destinations still need player testing.

@@ -16,6 +16,7 @@ class GermanRetailTest {
 
     @Test
     fun `German Game Boy hashes are explicitly supported retail games`() {
+        assertEquals("ROCKET HQ", gameText("RED_DE")!!.mapSecData[0xC7]!!.name)
         for (hash in TelemetrySampler.GERMAN_GB_SHA1S) {
             assertTrue(hash, hash in TelemetrySampler.SUPPORTED_GB_SHA1S)
             assertTrue(hash, GameTitles.isRetail(hash))
