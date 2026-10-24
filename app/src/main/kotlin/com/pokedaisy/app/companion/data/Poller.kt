@@ -285,7 +285,7 @@ class TelemetrySampler {
             if (kind != null && !itemTextChosen) {
                 itemTextChosen = true
                 PokedexSource.romChanged()
-                (nativeCfg?.language ?: gen1Cfg?.language ?: gen2Cfg?.language)?.let { com.pokedaisy.app.companion.i18n.L10n.applyGameLanguage(it) }
+                (nativeCfg?.language ?: gen1Cfg?.language ?: gen2Cfg?.language ?: dsGameCode.getOrNull(3))?.let { com.pokedaisy.app.companion.i18n.L10n.applyGameLanguage(it) }
                 RomItemText.use(itemTable(reader))
             }
             activeGame = kind ?: GameKind.FIRERED

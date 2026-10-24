@@ -15,3 +15,9 @@ internal val YELLOW_DE_TEXT by lazy { yellowText(speciesNamesYellowDe, moveNames
 internal val YELLOW_FR_TEXT by lazy { yellowText(speciesNamesYellowFr, moveNamesYellowFr, itemNamesYellowFr, mapNamesYellowFr) }
 internal val YELLOW_IT_TEXT by lazy { yellowText(speciesNamesYellowIt, moveNamesYellowIt, itemNamesYellowIt, mapNamesYellowIt) }
 internal val YELLOW_ES_TEXT by lazy { yellowText(speciesNamesYellowEs, moveNamesYellowEs, itemNamesYellowEs, mapNamesYellowEs) }
+
+// Red / Blue's German names match Yellow's except the town map's shorter Rocket HQ label.
+internal val RED_BLUE_DE_TEXT by lazy {
+    yellowText(speciesNamesYellowDe, moveNamesYellowDe, itemNamesYellowDe,
+        mapNamesYellowDe + (0xC7..0xCE).associateWith { "ROCKET HQ" })
+}

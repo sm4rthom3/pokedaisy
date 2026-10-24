@@ -103,6 +103,19 @@ test('Game Boy Color: Crystal, all three English releases', () => {
   }
 });
 
+test('German Game Boy retail ports', () => {
+  const carts = {
+    '87d523fe1a0c548db7c5477b451ddec1eb083c06': 'Pokémon Rote Edition',
+    '20e72dc6f41493eee1fdd0cef54214e6c3389688': 'Pokémon Blaue Edition',
+    '9254195d461ea942eaaa08cc4b83de3cf82aea0d': 'Pokémon Goldene Edition',
+    '8ecc58d621faaedf2a934bd2583d527220df7bb9': 'Pokémon Silberne Edition',
+    'accb584293ba056152f1fd908439b019017ff2fe': 'Pokémon Kristall-Edition',
+  };
+  for (const [sha1, title] of Object.entries(carts)) {
+    assert.equal(verdict(data, { platform: 'gb', sha1 }).title, title);
+  }
+});
+
 test('Game Boy Color: Crystal Clear, both versions in both colour builds', () => {
   for (const sha1 of ['a1c4da6b0057c98fe4ebea45d6812a484fc69abd', '6fc677bf7a9db103cb9ee11ac08d26782e69ae41',
     '84d5c4924c3f1f3fc690669148b7e392948fb23d', '534876e4e4d0d79a82fef3bbe5bea11c40451727']) {

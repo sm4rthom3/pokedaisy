@@ -72,7 +72,12 @@ object NdsArt {
         Thread({
             // The names first (a few text banks): the companion's first samples use them.
             runCatching { names = readNames(rom) }.onFailure { android.util.Log.w("pokedaisy", "NdsArt: names failed", it) }
-            names?.let { n -> if (activeGame.isDsGame) romLanguage = n.language }
+            names?.let { n ->
+                if (activeGame.isDsGame) {
+                    romLanguage = n.language
+                    com.pokedaisy.app.companion.i18n.L10n.applyGameLanguage(n.language)
+                }
+            }
             runCatching {
                 PokegearMap.dir = RomArt.dir(filesDir)
                 dir = RomArt.dir(filesDir)
