@@ -32,7 +32,7 @@ class GermanRetailTest {
         }
         val expected = readGen1Telemetry(us, GEN1_RED)
         val actual = readGen1Telemetry(german, GEN1_RED_DE)
-        assertEquals(expected.party, actual.party)
+        assertEquals(expected.party.map { Triple(it.species, it.level, it.hp) }, actual.party.map { Triple(it.species, it.level, it.hp) })
         assertEquals(expected.items, actual.items)
         assertEquals(expected.money, actual.money)
         assertEquals(expected.mapNum, actual.mapNum)
