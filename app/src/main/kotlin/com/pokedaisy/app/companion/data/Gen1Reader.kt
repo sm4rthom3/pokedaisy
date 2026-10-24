@@ -139,6 +139,18 @@ val GEN1_RED = GEN1_YELLOW.copy(
 /** Blue: Red's addresses (its own dex tables object, so a cache never mixes the two carts' pages). */
 val GEN1_BLUE = GEN1_RED.copy(pokedex = POKEDEX_BLUE)
 
+/** German Red / Blue: the same RAM relocation as the European Yellows (+5 above CFE0).
+ * Each operand was matched in both retail carts with port_gen1.py. Text tables match German Yellow. */
+val GEN1_RED_DE = GEN1_RED.copy(
+    partyCount = 0xD168, partyMons = 0xD170, bagCount = 0xD322, money = 0xD34C, badges = 0xD35B,
+    curMap = 0xD363, yCoord = 0xD366, xCoord = 0xD367, isInBattle = 0xD05C,
+    battleMon = 0xD019, enemyMon = 0xCFEA, enemyMonPartyPos = 0xCFED,
+    enemyPartyCount = 0xD8A1, enemyMons = 0xD8A9, playTime = 0xDA46, partyMenuType = 0xD082,
+    language = 'D', gameCode = "RED_DE", pokedex = POKEDEX_RED_DE,
+    battleMenuLeftX = 7, battleMenuRightX = 12,
+)
+val GEN1_BLUE_DE = GEN1_RED_DE.copy(gameCode = "BLUE_DE", pokedex = POKEDEX_BLUE_DE)
+
 /** Pokémon Yellow, Red or Blue (every language): Gen 1's reader ([readGen1Telemetry]), tables and look. */
 val GameKind?.isGen1: Boolean get() = this == GameKind.YELLOW || isRedBlue
 

@@ -32,6 +32,7 @@ object GameTitles {
     internal val NDS_SHA1S = setOf(
         "0862ec35b24de5c7e2dcb88c9eea0873110d755c", "4fcded0e2713dc03929845de631d0932ea2b5a37", "f8dc38ea20c17541a43b58c5e6d18c1732c7e582",
         "13b6853aa93121069df1d17446d3ecb36872aecf",
+        "576cdb7eec728c49aed85b9dd7e1e084ba1f08f9", "d40f19ac24d67c721a4ab25e1c013154443d75b4",
     )
 
     private val RETAIL: Map<String, String> = mapOf(
@@ -46,6 +47,8 @@ object GameTitles {
         "4fcded0e2713dc03929845de631d0932ea2b5a37" to "Pokémon HeartGold",
         "f8dc38ea20c17541a43b58c5e6d18c1732c7e582" to "Pokémon SoulSilver",
         "13b6853aa93121069df1d17446d3ecb36872aecf" to "Pokémon Goldene Edition HeartGold",
+        "576cdb7eec728c49aed85b9dd7e1e084ba1f08f9" to "Pokémon Silberne Edition SoulSilver",
+        "d40f19ac24d67c721a4ab25e1c013154443d75b4" to "Pokémon Platin-Edition",
         // The other Emeralds, by their own titles (No-Intro's dumps; no decomp builds them).
         "fe1558a3dcb0360ab558969e09b690888b846dd9" to "Pokémon Edición Esmeralda",
         "61c2eb2b380b1a75f0c94b767a2d4c26cd7ce4e3" to "Pokémon Smaragd-Edition",
@@ -67,6 +70,11 @@ object GameTitles {
         // pret/pokered's roms.sha1 (Blue: the build stands in for the cart).
         "ea9bcae617fdf159b045185467ae58b2e4a48b9a" to "Pokémon Red",
         "d7037c83e1ae5b39bde3c30787637ba1d4c48ce2" to "Pokémon Blue",
+        "87d523fe1a0c548db7c5477b451ddec1eb083c06" to "Pokémon Rote Edition",
+        "20e72dc6f41493eee1fdd0cef54214e6c3389688" to "Pokémon Blaue Edition",
+        "9254195d461ea942eaaa08cc4b83de3cf82aea0d" to "Pokémon Goldene Edition",
+        "8ecc58d621faaedf2a934bd2583d527220df7bb9" to "Pokémon Silberne Edition",
+        "accb584293ba056152f1fd908439b019017ff2fe" to "Pokémon Kristall-Edition",
         // Game Boy Color (pret/pokecrystal's roms.sha1): rev 0, rev 1, Australia.
         "f4cd194bdee0d04ca4eac29e09b8e4e9d818c133" to "Pokémon Crystal",
         "f2f52230b536214ef7c9924f483392993e226cfb" to "Pokémon Crystal",
@@ -165,7 +173,7 @@ object GameTitles {
     )
 
     /** DS carts worth hashing (128 MB each, once per file): the DS games above. */
-    private val NDS_CODES = setOf("CPUE", "IPKE", "IPKD", "IPGE")
+    private val NDS_CODES = setOf("CPUE", "CPUD", "IPKE", "IPKD", "IPGE", "IPGD")
 
     /** Only these games' ROMs (and Game Boy carts) are worth hashing: every entry above is one of them. */
     private val CODES = setOf("BPRE", "BPGE", "BPEE", "AXVE", "AXPE") + EMERALD_LOCALIZED_CODES +

@@ -1599,9 +1599,9 @@ class PokeDaisyActivity : Activity() {
         val nds = RomIdentity.isNds(r)
         romIsNds = nds
         dsWorld = if (!nds) null else when (RomIdentity.ndsGameCode(r)) {
-            "CPUE" -> com.pokedaisy.app.companion.data.PLATINUM_WORLD
+            "CPUE", "CPUD" -> com.pokedaisy.app.companion.data.PLATINUM_WORLD
             "IPKE", "IPKD" -> com.pokedaisy.app.companion.data.HEARTGOLD_WORLD
-            "IPGE" -> com.pokedaisy.app.companion.data.SOULSILVER_WORLD
+            "IPGE", "IPGD" -> com.pokedaisy.app.companion.data.SOULSILVER_WORLD
             else -> null
         }
         input.ds = nds

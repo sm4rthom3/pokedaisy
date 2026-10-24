@@ -313,12 +313,12 @@ fun rememberGameFont(game: GameKind?): FontFamily? {
     return remember(game, gen, language) {
         val path = when (game) {
             GameKind.YELLOW -> com.pokedaisy.app.companion.data.Gen1Art.yellowFont(com.pokedaisy.app.companion.data.romLanguage)
-            GameKind.RED, GameKind.BLUE -> com.pokedaisy.app.companion.data.Gen1Art.RED_BLUE_FONT
-            GameKind.CRYSTAL -> com.pokedaisy.app.companion.data.Gen2Art.CRYSTAL_FONT
+            GameKind.RED, GameKind.BLUE -> if (com.pokedaisy.app.companion.data.romLanguage == 'D') com.pokedaisy.app.companion.data.Gen1Art.RED_BLUE_FONT_DE else com.pokedaisy.app.companion.data.Gen1Art.RED_BLUE_FONT
+            GameKind.CRYSTAL -> if (com.pokedaisy.app.companion.data.romLanguage == 'D') com.pokedaisy.app.companion.data.Gen2Art.CRYSTAL_FONT_DE else com.pokedaisy.app.companion.data.Gen2Art.CRYSTAL_FONT
             GameKind.CRYSTAL_CLEAR -> com.pokedaisy.app.companion.data.Gen2Art.CRYSTAL_CLEAR_FONT
             GameKind.PRISM -> com.pokedaisy.app.companion.data.Gen2Art.PRISM_FONT
             GameKind.POLISHED_CRYSTAL -> com.pokedaisy.app.companion.data.Gen2Art.POLISHED_FONT
-            GameKind.GOLD, GameKind.SILVER -> com.pokedaisy.app.companion.data.Gen2Art.GOLD_SILVER_FONT
+            GameKind.GOLD, GameKind.SILVER -> if (com.pokedaisy.app.companion.data.romLanguage == 'D') com.pokedaisy.app.companion.data.Gen2Art.GOLD_SILVER_FONT_DE else com.pokedaisy.app.companion.data.Gen2Art.GOLD_SILVER_FONT
             else -> null
         } ?: return@remember null
         com.pokedaisy.app.companion.data.RomArt.file(context.filesDir, path)?.let { com.pokedaisy.app.gameFontFamily(context, it) }

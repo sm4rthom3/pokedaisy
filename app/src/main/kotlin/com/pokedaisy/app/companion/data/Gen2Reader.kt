@@ -74,6 +74,12 @@ data class Gen2Config(
     val berriesMax: Int = 0,
     /** A faithful build: its own species types, moves and item names over the normal ones (ActiveTables). */
     val polishedFaithful: Boolean = false,
+    /** Retail cart language and text-table key; English / hacks keep the defaults. */
+    val language: Char = 'E',
+    val gameCode: String = "",
+    /** German BattleMenu uses a wider box (left cursor x=5; English x=9). */
+    val battleMenuLeft: Int = 9,
+
 )
 
 /** Crystal's Mail (FLOWER_MAIL 0x9E, SURF_MAIL 0xB5 .. MIRAGE_MAIL 0xBD): the party menu marks a mon holding one with Mail's icon. */
@@ -154,6 +160,12 @@ val GEN2_GOLD = Gen2Config(
     pokedex = POKEDEX_GOLD,
 )
 val GEN2_SILVER = GEN2_GOLD.copy(pokedex = POKEDEX_SILVER)
+
+/** German retail carts keep the English WRAM operands (checked with port_gen1.py), but move their
+ * ROM tables and use metric Pokédex pages. Their battle menu begins at x=5. */
+val GEN2_GOLD_DE = GEN2_GOLD.copy(language = 'D', gameCode = "GOLD_DE", pokedex = POKEDEX_GOLD_DE, battleMenuLeft = 5)
+val GEN2_SILVER_DE = GEN2_SILVER.copy(language = 'D', gameCode = "SILVER_DE", pokedex = POKEDEX_SILVER_DE, battleMenuLeft = 5)
+val GEN2_CRYSTAL_DE = GEN2_CRYSTAL.copy(language = 'D', gameCode = "CRYSTAL_DE", pokedex = POKEDEX_CRYSTAL_DE, battleMenuLeft = 5)
 
 /**
  * Pokémon Crystal Clear (ShockSlayer's open-world hack of Crystal): v2.6.0 and v2.5.11, each in a Standard Colors and a
@@ -422,7 +434,7 @@ fun readGen2BattleInput(r: MemoryReader, cfg: Gen2Config): Pair<Int, Int> {
     val ty = top + (y - 1) * (spacing shr 4)
     val shown = tx < 20 && ty < 18 && u8(r.readCoreMemory(cfg.tileMap + ty * 20 + tx, 1), 0) == cfg.cursorTile
     if (!shown) return BATTLE_INPUT_BUSY to -1
-    if (top == BATTLE_MENU_TOP && left == BATTLE_MENU_LEFT && rows == 2 && cols == 2) {
+    if (top == BATTLE_MENU_TOP && left == cfg.battleMenuLeft && rows == 2 && cols == 2) {
         return BATTLE_INPUT_ACTION_SELECT to (x - 1) + 2 * (y - 1)
     }
     if (top == MOVE_MENU_TOP && left == MOVE_MENU_LEFT && cols == 1 && rows in 1..4 &&

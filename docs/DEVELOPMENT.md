@@ -2088,3 +2088,31 @@ pushing a different file (only one at a time for now). SRAM persists to
 | `scripts/capture_fixture.sh`, `scripts/roms.conf`       | Captures a live EWRAM+IWRAM memory fixture for one ROM off the device.                                                                                             |
 | `app/src/test/resources/fixtures/<key>/`                | Captured `{ewram,iwram}.bin` + `README.txt` per ROM — replayed by the JVM decode tests, not committed ROMs/saves themselves.                                       |
 | `app/src/test/kotlin/.../companion/data/*DecodeTest.kt` | One regression test per supported ROM, decoding its fixture and asserting the known-real values.                                                                   |
+
+
+### German retail ports (Game Boy and DS)
+
+The German Red / Blue carts are pinned by SHA-1 in `TelemetrySampler`: `87d523fe…` / `20e72dc6…`.
+Their WRAM from the enemy battler upwards is English's +5 bytes, verified by the operands in both carts
+(`scripts/port_gen1.py`). Their species, move and item names match German Yellow's. Their own metric
+Pokédex pages and sprite / palette tables are `POKEDEX_RED_DE` / `POKEDEX_BLUE_DE`; `Gen1Art` maps the
+moved town map / icon tables and extracts each cart's font. `GB_FIELD_RED_BLUE_DE` carries their checked
+PC / Fly / encounter signatures.
+
+German Gold / Silver / Crystal (`9254195d…`, `8ecc58d6…`, `accb5842…`) keep the English reader's WRAM
+operands. Their German BattleMenu box starts at x=4 (cursor x=5, spacing 7); the English cursor is x=9.
+`GermanGen2Text` reads their species, moves, items and landmarks from the running cart, and `Gen2Dex`
+reads the metric pages (one-byte decimetres, two-byte hectograms) and German sharp s. The localized
+ROM tables are separate configs. Gold / Silver keep the same feature limits as their English releases.
+Crystal's PC script is unchanged; the Fly script, RunMemScript and Flypoints have separate checked
+signatures, and its expanded view uses the moved SpriteMovementData table.
+
+German SoulSilver `IPGD` rev 0 (`576cdb7e…`) shares German HeartGold's save / field globals and call ABI.
+German Platinum `CPUD` rev 0 (`d40f19ac…`) uses save pointer `0x021C0934`, field pointer `0x021C097C`,
+battle template `0x020EA3B0` and overlay 5 main `0x021D1109`. Its call set is mapped separately from US
+rev 1; script / Fly layouts are shared. NARC paths and text-bank ids are shared within each game family.
+Unknown revisions stay unsupported. No ROMs, saves or new RAM captures are distributed with these ports.
+
+`GermanRetailTest` checks regional menus and existing public fixtures without ROMs. With `POKEDAISY_ROM_DIR`
+pointing to the local `gba` directory (sibling directories `gb`, `gbc`, `nds`), it also checks the owned
+German carts' names, every Gen 1 / Gen 2 dex page and sprite, art extraction and field signatures.

@@ -285,7 +285,7 @@ class TelemetrySampler {
             if (kind != null && !itemTextChosen) {
                 itemTextChosen = true
                 PokedexSource.romChanged()
-                (nativeCfg?.language ?: gen1Cfg?.language)?.let { com.pokedaisy.app.companion.i18n.L10n.applyGameLanguage(it) }
+                (nativeCfg?.language ?: gen1Cfg?.language ?: gen2Cfg?.language)?.let { com.pokedaisy.app.companion.i18n.L10n.applyGameLanguage(it) }
                 RomItemText.use(itemTable(reader))
             }
             activeGame = kind ?: GameKind.FIRERED
@@ -300,9 +300,9 @@ class TelemetrySampler {
             quetzalV1 = base?.quetzalV1 == true
             gen2Cfg?.let { activeGen2 = it }
             // A DS cart: its own text's language (NdsArt.names: a French Sacred Gold is an IPKE HeartGold, GitHub #230).
-            romLanguage = nativeCfg?.language ?: gen1Cfg?.language ?: NdsArt.names?.takeIf { kind?.isDsGame == true }?.language
+            romLanguage = nativeCfg?.language ?: gen1Cfg?.language ?: gen2Cfg?.language ?: NdsArt.names?.takeIf { kind?.isDsGame == true }?.language
                 ?: dsGameCode.getOrNull(3) ?: 'E'
-            romGameCode = nativeCfg?.gameCode ?: gen1Cfg?.gameCode ?: dsGameCode
+            romGameCode = nativeCfg?.gameCode ?: gen1Cfg?.gameCode ?: gen2Cfg?.gameCode ?: dsGameCode
             // Quetzal picks each kind of name's language from its own options (a few bytes a sample).
             quetzalNames = nativeCfg?.takeIf { it.quetzalPlacesDefault >= 0 }
                 ?.let { runCatching { readQuetzalNames(reader, it) }.getOrNull() } ?: QuetzalNames()
@@ -617,6 +617,8 @@ class TelemetrySampler {
                 "IPKE" -> { kind = GameKind.HEARTGOLD; gen4Cfg = GEN4_HEARTGOLD_US }
                 "IPKD" -> { kind = GameKind.HEARTGOLD; gen4Cfg = GEN4_HEARTGOLD_DE }
                 "IPGE" -> { kind = GameKind.SOULSILVER; gen4Cfg = GEN4_SOULSILVER_US }
+                "IPGD" -> { kind = GameKind.SOULSILVER; gen4Cfg = GEN4_SOULSILVER_DE }
+                "CPUD" -> { kind = GameKind.PLATINUM; gen4Cfg = GEN4_PLATINUM_DE }
                 else -> { kind = GameKind.PLATINUM; gen4Cfg = GEN4_PLATINUM_US }
             }
             else -> {
@@ -640,6 +642,11 @@ class TelemetrySampler {
         }
         val hash = if (off == size && size > 0) digest.digest().joinToString("") { "%02x".format(it) } else null
         when {
+            GAME_BOY_SUPPORT && hash == RED_DE_SHA1 -> { kind = GameKind.RED; gen1Cfg = GEN1_RED_DE }
+            GAME_BOY_SUPPORT && hash == BLUE_DE_SHA1 -> { kind = GameKind.BLUE; gen1Cfg = GEN1_BLUE_DE }
+            GAME_BOY_SUPPORT && hash == GOLD_DE_SHA1 -> { kind = GameKind.GOLD; gen2Cfg = GEN2_GOLD_DE }
+            GAME_BOY_SUPPORT && hash == SILVER_DE_SHA1 -> { kind = GameKind.SILVER; gen2Cfg = GEN2_SILVER_DE }
+            GAME_BOY_SUPPORT && hash == CRYSTAL_DE_SHA1 -> { kind = GameKind.CRYSTAL; gen2Cfg = GEN2_CRYSTAL_DE }
             GAME_BOY_SUPPORT && hash == RED_SHA1 -> { kind = GameKind.RED; gen1Cfg = GEN1_RED }
             GAME_BOY_SUPPORT && hash == BLUE_SHA1 -> { kind = GameKind.BLUE; gen1Cfg = GEN1_BLUE }
             GAME_BOY_SUPPORT && gen1ConfigFor(hash) != null -> { kind = GameKind.YELLOW; gen1Cfg = gen1ConfigFor(hash) }
@@ -932,6 +939,13 @@ class TelemetrySampler {
         const val RED_SHA1 = "ea9bcae617fdf159b045185467ae58b2e4a48b9a"
         const val BLUE_SHA1 = "d7037c83e1ae5b39bde3c30787637ba1d4c48ce2"
 
+        const val RED_DE_SHA1 = "87d523fe1a0c548db7c5477b451ddec1eb083c06"
+        const val BLUE_DE_SHA1 = "20e72dc6f41493eee1fdd0cef54214e6c3389688"
+        const val GOLD_DE_SHA1 = "9254195d461ea942eaaa08cc4b83de3cf82aea0d"
+        const val SILVER_DE_SHA1 = "8ecc58d621faaedf2a934bd2583d527220df7bb9"
+        const val CRYSTAL_DE_SHA1 = "accb584293ba056152f1fd908439b019017ff2fe"
+        val GERMAN_GB_SHA1S = setOf(RED_DE_SHA1, BLUE_DE_SHA1, GOLD_DE_SHA1, SILVER_DE_SHA1, CRYSTAL_DE_SHA1)
+
         /** A Yellow cart's config by its hash, or null for any other Game Boy game. */
         fun gen1ConfigFor(hash: String?): Gen1Config? = when (hash) {
             YELLOW_SHA1 -> GEN1_YELLOW
@@ -1003,7 +1017,7 @@ class TelemetrySampler {
 
         /** The Game Boy / Color carts the companion reads ([CompanionSupport] checks imports against it). */
         val SUPPORTED_GB_SHA1S = setOf(YELLOW_SHA1, YELLOW_DE_SHA1, YELLOW_FR_SHA1, YELLOW_IT_SHA1, YELLOW_ES_SHA1, RED_SHA1, BLUE_SHA1) +
-            CRYSTAL_SHA1S + CRYSTAL_CLEAR_SHA1S + PRISM_V0_95_254_SHA1 + GOLD_SHA1 + SILVER_SHA1 + POLISHED_CRYSTAL_SHA1S
+            GERMAN_GB_SHA1S + CRYSTAL_SHA1S + CRYSTAL_CLEAR_SHA1S + PRISM_V0_95_254_SHA1 + GOLD_SHA1 + SILVER_SHA1 + POLISHED_CRYSTAL_SHA1S
 
         /**
          * Game Boy / Color (Pokémon Yellow): the library, folder scan, frontend launch and
@@ -1022,7 +1036,7 @@ class TelemetrySampler {
 
         /** The DS carts the companion reads, by their header's game code (0x0C) and revision (0x1E): Platinum USA rev 1,
          * HeartGold USA / Germany and SoulSilver USA (rev 0). The website's ROM check gets them through compat.json. */
-        val NDS_GAMES = mapOf("CPUE" to 1, "IPKE" to 0, "IPKD" to 0, "IPGE" to 0)
+        val NDS_GAMES = mapOf("CPUE" to 1, "IPKE" to 0, "IPKD" to 0, "IPGE" to 0, "IPGD" to 0, "CPUD" to 0)
 
         /** [detectDs] and the library's [com.pokedaisy.app.CompanionSupport] both ask this. */
         fun ndsSupported(code: String?, revision: Int?): Boolean =

@@ -9,7 +9,7 @@ package com.pokedaisy.app.companion.data
  * ([Gen2DexTables]); the seen / caught flags are WRAM bit arrays by species ([readGen2PokedexState]). Crystal's
  * species ids are its Dex numbers; Prism's aren't ([Gen2DexTables.dexOrder]), so every table here is by species.
  */
-class Gen2DexTables(
+data class Gen2DexTables(
     val baseData: Pair<Int, Int>,           // BaseData: [baseDataSize] bytes per species
     val dexEntryPointers: Pair<Int, Int>,   // PokedexDataPointerTable: a word per species ...
     val dexEntryBanks: Pair<Int, Int>,      // ... in the bank GetDexEntryPointer.PokedexEntryBanks names per 64
@@ -48,6 +48,10 @@ class Gen2DexTables(
     /** Polished Crystal: this build's ROM tables ([polishedCrystalAddrs]): its pages, body data, pics, pic sizes, palettes and
      * base data are by the species' table index ([Gen2Dex]'s polished branch); null = Crystal's formats. */
     val polished: IntArray? = null,
+    /** European retail pages store height in one byte (dm) and weight in two (hg). */
+    val metric: Boolean = false,
+    val german: Boolean = false,
+
 ) {
     private val dexNumbers: IntArray? = dexOrder?.let { o ->
         IntArray((o.maxOrNull() ?: 0) + 1).also { m -> o.forEachIndexed { i, s -> if (m[s] == 0) m[s] = i + 1 } }
@@ -144,6 +148,21 @@ val POKEDEX_CRYSTAL = PokedexTables(
 /** Gold's and Silver's: the same tables over each version's own pages (two objects, so a dex cache never crosses them). */
 val POKEDEX_GOLD = POKEDEX_CRYSTAL.copy(gen2 = GEN2_DEX_GOLD_SILVER)
 val POKEDEX_SILVER = POKEDEX_CRYSTAL.copy(gen2 = GEN2_DEX_GOLD_SILVER)
+
+/** German Gold / Silver: code references and table contents mapped from their English builds. */
+val GEN2_DEX_GOLD_SILVER_DE = GEN2_DEX_GOLD_SILVER.copy(
+    baseData = 0x14 to 0x5B00, dexEntryPointers = 0x11 to 0x4354,
+    picsBanks = 0x14 to 0x586D, picBankFixes = 0x14 to 0x586D,
+    tmHmMoves = 0x04 to 0x5A5D, metric = true, german = true,
+)
+val GEN2_DEX_CRYSTAL_DE = GEN2_DEX_CRYSTAL.copy(
+    baseData = 0x14 to 0x540E, dexEntryPointers = 0x11 to 0x436C, dexEntryBanks = 0x11 to 0x4346,
+    picsBanks = 0x14 to 0x51BE, itemDescriptions = 0x72 to 0x4979,
+    tmHmMoves = 0x04 to 0x5671, moveDescriptions = 0x0B to 0x4B55, metric = true, german = true,
+)
+val POKEDEX_GOLD_DE = POKEDEX_GOLD.copy(gen2 = GEN2_DEX_GOLD_SILVER_DE, metric = true, decimalPoint = ',', unitSpace = false)
+val POKEDEX_SILVER_DE = POKEDEX_SILVER.copy(gen2 = GEN2_DEX_GOLD_SILVER_DE, metric = true, decimalPoint = ',', unitSpace = false)
+val POKEDEX_CRYSTAL_DE = POKEDEX_CRYSTAL.copy(gen2 = GEN2_DEX_CRYSTAL_DE, metric = true, decimalPoint = ',', unitSpace = false)
 
 /**
  * Crystal Clear v2.6.0 (both builds): Crystal's tables moved (found by their contents and the code that reads them,
@@ -343,10 +362,10 @@ object Gen2Dex {
 
     /** Gen 2 text from [o] until its end (@ 0x50); a dex entry's second page (a page break, 0x50 too) when [pages] is 2.
      * [words]: the game's dictionary ([dictionary]), whose bytes stand for whole strings. */
-    private fun text(rom: ByteArray, o: Int, pages: Int = 1, words: Map<Int, Int> = emptyMap()): String =
-        flow(StringBuilder().also { raw(rom, o, pages, words, it, 0) }.toString())
+    private fun text(rom: ByteArray, o: Int, pages: Int = 1, words: Map<Int, Int> = emptyMap(), german: Boolean = false): String =
+        flow(StringBuilder().also { raw(rom, o, pages, words, it, 0, german) }.toString())
 
-    private fun raw(rom: ByteArray, o: Int, pages: Int, words: Map<Int, Int>, sb: StringBuilder, depth: Int) {
+    private fun raw(rom: ByteArray, o: Int, pages: Int, words: Map<Int, Int>, sb: StringBuilder, depth: Int, german: Boolean = false) {
         var i = o
         var left = pages
         while (i < rom.size && i < o + 400) {
@@ -357,7 +376,7 @@ object Gen2Dex {
                 continue
             }
             val word = words[c]
-            if (word != null && depth < 4) raw(rom, word, 1, words, sb, depth + 1) else sb.append(CHARS[c] ?: "")
+            if (word != null && depth < 4) raw(rom, word, 1, words, sb, depth + 1, german) else sb.append(if (german && c == 0xBE) "ß" else CHARS[c] ?: "")
         }
     }
 
@@ -640,14 +659,19 @@ object Gen2Dex {
             var o = e
             while (u8(rom, o) != 0x50) o++
             val words = dictionary(rom, t)
-            category = text(rom, e, words = words)
+            category = text(rom, e, words = words, german = t.german)
             o++
-            val height = u16(rom, o)     // feet x 100 + inches
-            lbs10 = u16(rom, o + 2)
-            heightIn = (height / 100) * 12 + height % 100
-            heightDm = Math.round(heightIn * 2.54 / 10).toInt()
-            weightHg = Math.round(lbs10 * 0.45359237).toInt()
-            description = text(rom, o + 4, pages = 2, words = words)
+            if (t.metric) {
+                heightDm = u8(rom, o)
+                weightHg = u16(rom, o + 1)
+            } else {
+                val height = u16(rom, o)     // feet x 100 + inches
+                lbs10 = u16(rom, o + 2)
+                heightIn = (height / 100) * 12 + height % 100
+                heightDm = Math.round(heightIn * 2.54 / 10).toInt()
+                weightHg = Math.round(lbs10 * 0.45359237).toInt()
+            }
+            description = text(rom, o + if (t.metric) 3 else 4, pages = 2, words = words, german = t.german)
         }
         return DexEntry(
             national = dex,
@@ -752,7 +776,7 @@ object Gen2Dex {
                 ib to u16(rom, off(ib, ia) + 2 * (id - 1))
             } else return ""
             val p = t.packed
-            if (p != null) flow(packedText(rom, p, bank, ptr).first) else text(rom, off(bank, ptr), words = dictionary(rom, t))
+            if (p != null) flow(packedText(rom, p, bank, ptr).first) else text(rom, off(bank, ptr), words = dictionary(rom, t), german = t.german)
         }.getOrDefault("")
     }
 }

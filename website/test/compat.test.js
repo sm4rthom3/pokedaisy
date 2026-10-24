@@ -67,7 +67,10 @@ test('DS: Platinum rev 1, HeartGold / SoulSilver, by the header', () => {
   assert.equal(ds('IPKE', 0).title, 'Pokémon HeartGold');
   assert.deepEqual(ds('IPKD', 0), { status: 'supported', title: 'Pokémon Goldene Edition HeartGold', family: 'Nintendo DS' });
   assert.equal(ds('IPKD', 1).reason, 'revision');
-  assert.equal(ds('IPGD', 0).reason, 'ds');
+  assert.equal(ds('IPGD', 0).title, 'Pokémon Silberne Edition SoulSilver');
+  assert.equal(ds('IPGD', 1).reason, 'revision');
+  assert.equal(ds('CPUD', 0).title, 'Pokémon Platin-Edition');
+  assert.equal(ds('CPUD', 1).reason, 'revision');
   assert.equal(ds('IPGE', 0).title, 'Pokémon SoulSilver');
   assert.equal(ds('ADAE', 0).reason, 'ds');
 });

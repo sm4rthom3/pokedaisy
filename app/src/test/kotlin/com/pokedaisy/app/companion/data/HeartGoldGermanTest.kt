@@ -25,7 +25,11 @@ class HeartGoldGermanTest {
         }
         assertTrue(supported("IPKD", 0))
         assertTrue(WideScreen.ndsKnows("IPKD", 0))
-        for ((code, rev) in listOf("IPKD" to 1, "IPKD" to 255, "IPKF" to 0, "IPGD" to 0)) {
+        assertTrue(supported("IPGD", 0))
+        assertTrue(supported("CPUD", 0))
+        assertTrue(WideScreen.ndsKnows("IPGD", 0))
+        assertTrue(WideScreen.ndsKnows("CPUD", 0))
+        for ((code, rev) in listOf("IPKD" to 1, "IPKD" to 255, "IPKF" to 0, "CPUD" to 1, "CPUF" to 0, "IPGD" to 1)) {
             assertFalse("$code rev $rev", supported(code, rev))
             assertFalse("$code rev $rev", WideScreen.ndsKnows(code, rev))
         }
@@ -39,6 +43,8 @@ class HeartGoldGermanTest {
             romGameCode = "IPKD"
             assertSame(GEN4_HEARTGOLD_DE, gen4ConfigFor(GameKind.HEARTGOLD))
             assertSame(GEN4_HEARTGOLD_US, gen4ConfigFor(GameKind.HEARTGOLD, "IPKE"))
+            assertSame(GEN4_SOULSILVER_DE, gen4ConfigFor(GameKind.SOULSILVER, "IPGD"))
+            assertSame(GEN4_PLATINUM_DE, gen4ConfigFor(GameKind.PLATINUM, "CPUD"))
             assertSame(GEN4_SOULSILVER_US, gen4ConfigFor(GameKind.SOULSILVER, "IPGE"))
         } finally { romGameCode = oldCode }
     }

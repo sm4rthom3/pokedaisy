@@ -108,7 +108,8 @@ fun gameText(code: String): GameText? = when (code) {
     "BPEJ" -> EMERALD_JA
     UNBOUND_FR_TEXT -> UNBOUND_FR
     KAIZO_TEXT -> EMERALD_KAIZO
-    "APSD" -> YELLOW_DE_TEXT
+    "APSD", "RED_DE", "BLUE_DE" -> YELLOW_DE_TEXT
+    "GOLD_DE", "SILVER_DE", "CRYSTAL_DE" -> GermanGen2Text.forCode(code)
     "APSF" -> YELLOW_FR_TEXT
     "APSI" -> YELLOW_IT_TEXT
     "APSS" -> YELLOW_ES_TEXT

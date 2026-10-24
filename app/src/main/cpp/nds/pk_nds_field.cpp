@@ -55,7 +55,7 @@ static const PkNdsFieldGame HEARTGOLD_US = {
 // gOverlayTemplate_Battle's reference in sub_02087C38, and overlay 1's field-map template. Structs and the
 // callSet 2 function addresses are shared with the US carts (checked against the German ARM9).
 static const PkNdsFieldGame HEARTGOLD_DE = {
-    "HeartGold (Germany)",
+    "HeartGold / SoulSilver (Germany)",
     0x021D4138,   // sFieldSysPtr
     0x020FA438,   // gOverlayTemplate_Battle
     0x00, 0x10, 0x40, 0x6C,
@@ -69,6 +69,22 @@ static const PkNdsFieldGame HEARTGOLD_DE = {
     2,
     0x30,
     0x08,
+};
+
+// Platinum (Germany, CPUD rev 0): functions and literal pools matched against the US rev 1 ARM9,
+// overlay 5's main template, SoundSystem + 0xBCD0C and the SDK's sSeqPlayer references.
+static const PkNdsFieldGame PLATINUM_DE = {
+    "Platinum (Germany)",
+    0x021C097C, 0x020EA3B0,
+    0x00, 0x10, 0x3C, 0x68,
+    0x1C,
+    0x14, 0x920, 0x920 + 0xCC,
+    0x1C,
+    0x021D1109,
+    0x021BECA4,
+    0x021CB104,
+    0,
+    3,
 };
 
 // WILD ENCOUNTERS OFF's hold: the MapHeaderData whose rates it zeroed, for which map, and their values before.
@@ -95,7 +111,8 @@ const PkNdsFieldGame* pk_nds_field_game(const char code[4], int revision)
 {
     if (memcmp(code, "CPUE", 4) == 0 && revision == 1) return &PLATINUM_US_REV1;
     if ((memcmp(code, "IPKE", 4) == 0 || memcmp(code, "IPGE", 4) == 0) && revision == 0) return &HEARTGOLD_US;
-    if (memcmp(code, "IPKD", 4) == 0 && revision == 0) return &HEARTGOLD_DE;
+    if ((memcmp(code, "IPKD", 4) == 0 || memcmp(code, "IPGD", 4) == 0) && revision == 0) return &HEARTGOLD_DE;
+    if (memcmp(code, "CPUD", 4) == 0 && revision == 0) return &PLATINUM_DE;
     return 0;
 }
 

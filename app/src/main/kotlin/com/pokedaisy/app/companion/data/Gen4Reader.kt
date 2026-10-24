@@ -306,14 +306,25 @@ val GEN4_SOULSILVER_US = gen4HeartGoldFamily(saveDataPtr = HEARTGOLD_SAVE_DATA_P
  * The save layout is shared with the US carts; its two globals moved by 0x20. */
 val GEN4_HEARTGOLD_DE = gen4HeartGoldFamily(saveDataPtr = 0x021D2208, fieldSystemPtr = 0x021D4138)
 
+/** German SoulSilver rev 0 shares HeartGold's globals and save layout (IPGD, SHA-1 576cdb7e…). */
+val GEN4_SOULSILVER_DE = gen4HeartGoldFamily(saveDataPtr = 0x021D2208, fieldSystemPtr = 0x021D4138)
+
+/** German Platinum rev 0: SaveData / FieldSystem literal pools in its ARM9. The save and battle layouts
+ * match the US rev 1 cart; globals and the battle overlay template have moved. */
+val GEN4_PLATINUM_DE = GEN4_PLATINUM_US.copy(
+    saveDataPtr = 0x021C0934,
+    battle = GEN4_PLATINUM_US.battle!!.copy(fieldSystemPtr = 0x021C097C, battleTemplate = 0x020EA3B0),
+    townMap = GEN4_PLATINUM_US.townMap!!.copy(fieldSystemPtr = 0x021C097C),
+)
+
 /** A DS game ([readGen4Telemetry]): two screens, its own look and tables. */
 val GameKind?.isDsGame: Boolean get() = this == GameKind.PLATINUM || isHgss
 
 /** The Gen 4 config for [kind], or null. */
 fun gen4ConfigFor(kind: GameKind?, code: String = romGameCode): Gen4Config? = when (kind) {
-    GameKind.PLATINUM -> GEN4_PLATINUM_US
+    GameKind.PLATINUM -> if (code == "CPUD") GEN4_PLATINUM_DE else GEN4_PLATINUM_US
     GameKind.HEARTGOLD -> if (code == "IPKD") GEN4_HEARTGOLD_DE else GEN4_HEARTGOLD_US
-    GameKind.SOULSILVER -> GEN4_SOULSILVER_US
+    GameKind.SOULSILVER -> if (code == "IPGD") GEN4_SOULSILVER_DE else GEN4_SOULSILVER_US
     else -> null
 }
 
