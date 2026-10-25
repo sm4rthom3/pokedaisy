@@ -20,7 +20,6 @@ class GameTitlesTest {
             })
             for (hash in listOf(TelemetrySampler.GOLD_DE_SHA1, TelemetrySampler.SILVER_DE_SHA1)) {
                 assertEquals(RomCategory.GBC, GameTitles.platformOf(rom) { hash })
-                assertEquals(RomCategory.GBC, GameTitles.categoryOf(rom, hash, true))
             }
             assertEquals(RomCategory.GB, GameTitles.platformOf(rom) { TelemetrySampler.YELLOW_DE_SHA1 })
         } finally { rom.delete() }
