@@ -34,11 +34,30 @@ class GermanRetailTest {
         val expected = readGen1Telemetry(us, GEN1_RED)
         val actual = readGen1Telemetry(german, GEN1_RED_DE)
         assertEquals(expected.party.map { Triple(it.species, it.level, it.hp) }, actual.party.map { Triple(it.species, it.level, it.hp) })
+        assertEquals(expected.party.map { it.nickname }, actual.party.map { it.nickname })
         assertEquals(expected.items, actual.items)
         assertEquals(expected.money, actual.money)
         assertEquals(expected.mapNum, actual.mapNum)
         assertEquals(expected.pokedex!!.caught, actual.pokedex!!.caught)
         assertEquals(expected.pokedex!!.seen, actual.pokedex!!.seen)
+    }
+
+    @Test
+    fun `German Gen 2 nicknames preserve sharp s and umlauts`() {
+        for ((fixture, cfg) in listOf("gold" to GEN2_GOLD_DE, "silver" to GEN2_SILVER_DE, "crystal" to GEN2_CRYSTAL_DE)) {
+            val base = FixtureMemoryReader.load(fixture)
+            val namesAt = cfg.partyMons + 6 * 48 + 6 * 11
+            val reader = object : MemoryReader {
+                override fun readCoreMemory(addr: Long, size: Int): ByteArray {
+                    val out = base.readCoreMemory(addr, size)
+                    if (addr == namesAt) {
+                        byteArrayOf(0x81.toByte(), 0xBE.toByte(), 0xC3.toByte(), 0xC4.toByte(), 0xC5.toByte(), 0x50).copyInto(out)
+                    }
+                    return out
+                }
+            }
+            assertEquals(fixture, "Bßäöü", readGen2Telemetry(reader, cfg).party.first().nickname)
+        }
     }
 
     @Test

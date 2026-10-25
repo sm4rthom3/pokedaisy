@@ -11,6 +11,22 @@ import java.io.File
 
 class GameTitlesTest {
     @Test
+    fun `German dual-mode Gold and Silver stay GBC even with a gb extension`() {
+        val rom = File.createTempFile("dual-mode-", ".gb")
+        try {
+            rom.writeBytes(ByteArray(0x160).apply {
+                byteArrayOf(0xCE.toByte(), 0xED.toByte(), 0x66, 0x66).copyInto(this, 0x104)
+                this[0x143] = 0x80.toByte()
+            })
+            for (hash in listOf(TelemetrySampler.GOLD_DE_SHA1, TelemetrySampler.SILVER_DE_SHA1)) {
+                assertEquals(RomCategory.GBC, GameTitles.platformOf(rom) { hash })
+                assertEquals(RomCategory.GBC, GameTitles.categoryOf(rom, hash, true))
+            }
+            assertEquals(RomCategory.GB, GameTitles.platformOf(rom) { TelemetrySampler.YELLOW_DE_SHA1 })
+        } finally { rom.delete() }
+    }
+
+    @Test
     fun `every hack the companion supports has a name`() {
         val missing = TelemetrySampler.SUPPORTED_HACK_SHA1S - GameTitles.BY_SHA1.keys
         assertTrue("no title for $missing", missing.isEmpty())
@@ -36,10 +52,11 @@ class GameTitlesTest {
         assertEquals("(Rev 1)", GameTitles.tidy("(Rev 1)"))
     }
 
-    /** The library's GB / GBC views (GitHub #237): Polished Crystal's header says dual-mode (0x80), but it's a Color game;
-     * Yellow / Gold say the same and stay GB, Crystal says Color-only (0xC0). Skips without the ROMs. */
+    /** The library's GB / GBC views (GitHub #237, #271): Polished Crystal's, Gold's and Silver's headers say dual-mode
+     * (0x80), but they're Color games; Yellow says the same and stays GB, Crystal says Color-only (0xC0), Red none.
+     * Skips without the ROMs. */
     @Test
-    fun `Polished Crystal is a GBC game, Yellow a GB one`() {
+    fun `Polished Crystal and Gold are GBC games, Yellow a GB one`() {
         val dir = File(File(com.pokedaisy.app.companion.data.RETAIL_ROM_DIR).parentFile, "gbc")
         fun platform(name: String): RomCategory {
             val rom = File(dir, name)
@@ -50,6 +67,9 @@ class GameTitlesTest {
         assertEquals(RomCategory.GBC, platform("Pokemon Polished Crystal (v3.2.3) (Faithful).gbc"))
         assertEquals(RomCategory.GBC, platform("Pokemon - Crystal Version (USA, Europe) (Rev 1).gbc"))
         assertEquals(RomCategory.GB, platform("Pokemon - Yellow Version - Special Pikachu Edition (USA, Europe) (CGB+SGB Enhanced).gb"))
-        assertEquals(RomCategory.GB, platform("Pokemon - Gold Version (USA, Europe) (SGB Enhanced) (GB Compatible).gbc"))
+        assertEquals(RomCategory.GBC, platform("Pokemon - Gold Version (USA, Europe) (SGB Enhanced) (GB Compatible).gbc"))
+        assertEquals(RomCategory.GBC, platform("Pokemon - Silver Version (USA, Europe) (SGB Enhanced) (GB Compatible).gbc"))
+        assertEquals(RomCategory.GB, platform("Pokemon - Gelbe Edition - Special Pikachu Edition (Germany) (GBC,SGB Enhanced).gb"))
+        assertEquals(RomCategory.GB, platform("Pokemon - Red Version (USA, Europe) (SGB Enhanced).gb"))
     }
 }

@@ -2104,6 +2104,8 @@ operands. Their German BattleMenu box starts at x=4 (cursor x=5, spacing 7); the
 `GermanGen2Text` reads their species, moves, items and landmarks from the running cart, and `Gen2Dex`
 reads the metric pages (one-byte decimetres, two-byte hectograms) and German sharp s. The localized
 ROM tables are separate configs. Gold / Silver keep the same feature limits as their English releases.
+Their hashes are also in `GameTitles.COLOR_DUAL`, so the library classifies them as GBC regardless of the
+file extension. Gen 2 nicknames use the same German character map as their extracted font, including ß.
 Crystal's PC script is unchanged; the Fly script, RunMemScript and Flypoints have separate checked
 signatures, and its expanded view uses the moved SpriteMovementData table.
 

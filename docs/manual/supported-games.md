@@ -26,7 +26,7 @@ Any GBA, Game Boy or DS game plays in PokeDaisy. "Supported" is about the compan
 - Pokémon Prism, built on Crystal with regions of its own: version 0.95 build 254 (Hotfix 5), drawn in the game's own look, with its own Pokédex.
 - Polished Crystal: versions 3.2.0 to 3.2.3, each in its normal and its faithful build (and their debug builds), drawn in the game's own look, with its own Pokédex. The faithful builds keep the original types and moves, and the companion shows them that way.
 
-German Game Boy copies show their own names, font and metric Pokédex pages.
+German Game Boy copies show their own names, font and metric Pokédex pages. Gold and Silver appear under GBC in the library, including their German releases.
 
 **Nintendo DS:**
 
