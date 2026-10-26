@@ -126,6 +126,8 @@ object Gen2Art {
         ))
     }
 
+    private val GERMAN_CHARS = CHARS + mapOf(0xBE to 'ß')
+
     val CRYSTAL = Gen2ArtTables(
         name = "crystal",
         sha1s = setOf(TelemetrySampler.CRYSTAL_SHA1, TelemetrySampler.CRYSTAL_REV1_SHA1, TelemetrySampler.CRYSTAL_AU_SHA1),
@@ -188,7 +190,7 @@ object Gen2Art {
         sha1s = setOf(TelemetrySampler.GOLD_DE_SHA1), fontPath = GOLD_SILVER_FONT_DE,
         icons = 0x23 to 0x6A72, monMenuIcons = 0x23 to 0x6977, heldItemIcons = 0x23 to 0x68DD,
         townMaps = listOf(0x24 to 0x5F84, 0x24 to 0x60ED), townMapPalMap = 0x24 to 0x5EDE,
-        chars = CHARS + mapOf(0xBE to 'ß'),
+        chars = GERMAN_CHARS,
     )
     val SILVER_DE = GOLD_DE.copy(
         sha1s = setOf(TelemetrySampler.SILVER_DE_SHA1),
@@ -197,7 +199,7 @@ object Gen2Art {
     val CRYSTAL_DE = CRYSTAL.copy(
         sha1s = setOf(TelemetrySampler.CRYSTAL_DE_SHA1), fontPath = CRYSTAL_FONT_DE,
         townMaps = listOf(0x24 to 0x601E, 0x24 to 0x6187), townMapPalMap = 0x24 to 0x5F6A,
-        chars = CHARS + mapOf(0xBE to 'ß'),
+        chars = GERMAN_CHARS,
     )
 
     /**
@@ -321,6 +323,13 @@ object Gen2Art {
     }
 
     private val GAMES = listOf(CRYSTAL, GOLD, SILVER, CRYSTAL_DE, GOLD_DE, SILVER_DE, CRYSTAL_CLEAR_V2_6_0, CRYSTAL_CLEAR_V2_5_11, PRISM) + POLISHED_CRYSTAL
+
+    /** The game's text characters for its font tiles 0x80-0xFF, shared by its font and nicknames. */
+    internal fun chars(polished: Boolean, language: Char = 'E'): Map<Int, Char> = when {
+        polished -> POLISHED_CHARS
+        language == 'D' -> GERMAN_CHARS
+        else -> CHARS
+    }
 
     private fun off(bank: Int, addr: Int) = if (bank == 0) addr else bank * 0x4000 + (addr - 0x4000)
     private fun u8(b: ByteArray, o: Int) = b[o].toInt() and 0xFF

@@ -55,7 +55,7 @@ The `DISPLAY OPTIONS` page:
 | `SHADERS` | a page (shows the current filter) | `FILTER`, `GRID`, `SMOOTHING`, `GBA COLORS`, `UNLIT SCREEN` and `ON COMPANION`; see the next table. | [Screen](screen.md) |
 | `OVERLAY` | **`NONE`**, `DAISY`, `BEZEL`, your imports (a page) | A frame around the game. Import your own RetroArch overlays here with `IMPORT FILE`. | [Screen](screen.md) |
 | `LIGHT COMPANION` | **`AUTO`**, `ON`, `OFF` | For slow devices: the companion redraws less and without animations, so your buttons don't reach the game late. `AUTO` turns it on where it's needed. | [Screen](screen.md#light-companion-for-slow-devices) |
-| `COMPANION` | **`AT BOTTOM`**, `UNDER GAME` | Only on a device with one screen: where the companion sits when you hold it upright. With `EXPAND`, `UNDER GAME` gives the touch controls their own strip at the bottom, and it's greyed out without touch controls. | [Devices](devices.md) |
+| `COMPANION` | `AT BOTTOM`, **`UNDER GAME`** | Only on a device with one screen: where the companion sits when you hold it upright. With `EXPAND`, `UNDER GAME` gives the touch controls their own strip at the bottom, and it's greyed out without touch controls. | [Devices](devices.md) |
 
 The `SHADERS` page:
 
@@ -90,7 +90,7 @@ The `SHADERS` page:
 | Setting | Choices | What it does | More |
 | --- | --- | --- | --- |
 | `GAME BUTTONS` | a page | Which button presses A, B, L, R, `START` and `SELECT`, plus `X`, `Y`, `TURBO A` and `TURBO B`. Press the button you want on each row. | [Controls](controls.md) |
-| `HOTKEYS` | **`ON`**, `OFF` (a page) | Shortcuts for save states, fast-forward, slow motion, rewind, `ZOOM` and leaving the game. Each can be a combination of buttons, or cleared with `CLEAR`. Off, every button goes to the game. | [Controls](controls.md) |
+| `HOTKEYS` | **`ON`**, `OFF` (a page) | Shortcuts for save states, fast-forward, slow motion, rewind, `ZOOM`, opening the companion and leaving the game. Each can be a combination of buttons, or cleared with `CLEAR`. Off, every button goes to the game. | [Controls](controls.md) |
 | `QUICK MENU` | a page | Its `STYLE` (**`RING`**, `GRID`), `LABELS` (**`ON`**, `OFF`) and which actions it shows (all of them to start with). Its button is the `QUICK MENU` hotkey. | [Controls](controls.md) |
 | `TOUCH CONTROLS` | a page | The on-screen buttons: `SHOW` (**`AUTO`**, `ALWAYS`, `NEVER`), `LAYOUT` (**`SIDES`**, `CLASSIC`, `COMPACT`, `CUSTOM`), `EDIT LAYOUT`, `POSITION` (`TOP`, **`MIDDLE`**, `BOTTOM`), `COMPANION` (upright, one-screen devices), `SIZE`, `OPACITY`, `D-PAD`, `FADE WHEN IDLE`, `VIBRATION` and the extra buttons (`FF`, `QUICK MENU`, turbo, save and load state). A preview shows the result. | [Controls](controls.md#touch-controls) |
 

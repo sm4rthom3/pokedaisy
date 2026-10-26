@@ -32,7 +32,7 @@ jobs:
           p.write_text(p.read_text().replace('<string name="app_name">PokeDaisy</string>', '<string name="app_name">PokeDaisy DE-Test</string>'))
           PY
       - run: python3 scripts/check_translations.py
-      - run: ./gradlew :app:testDebugUnitTest --tests '*GermanRetailTest' --tests '*HeartGoldGermanTest' --tests '*SiteDataExportTest' --tests '*HeartGoldDecodeTest' --tests '*GoldSilverDecodeTest' --tests '*CrystalDecodeTest' --tests '*RedBlueDecodeTest' :app:assembleDebug --stacktrace --max-workers=2
+      - run: ./gradlew :app:testDebugUnitTest --tests '*GameTitlesTest' --tests '*PartyNameTest' --tests '*GermanRetailTest' --tests '*HeartGoldGermanTest' --tests '*SiteDataExportTest' --tests '*HeartGoldDecodeTest' --tests '*GoldSilverDecodeTest' --tests '*CrystalDecodeTest' --tests '*RedBlueDecodeTest' :app:assembleDebug --stacktrace --max-workers=2
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         with:
           name: pokedaisy-german-retail-thor
