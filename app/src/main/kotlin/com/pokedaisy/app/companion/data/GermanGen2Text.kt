@@ -18,8 +18,8 @@ object GermanGen2Text {
         fun u8(at: Int) = rom[at].toInt() and 0xFF
         fun word(at: Int) = u8(at) or (u8(at + 1) shl 8)
         val chars = Gen1Charset.DF.chars + mapOf(0xEA to "é", 0x5B to "PC", 0x5C to "TM")
-        fun text(at: Int): String = buildString {
-            for (i in at until minOf(at + 80, rom.size)) {
+        fun text(at: Int, maxLength: Int = 80): String = buildString {
+            for (i in at until minOf(at + maxLength, rom.size)) {
                 if (u8(i) == 0x50) break
                 append(chars[u8(i)] ?: "")
             }
@@ -34,7 +34,8 @@ object GermanGen2Text {
         }
         val namesBank = if (crystal) 0x14 else 0x6C
         val names = off(namesBank, if (crystal) 0x736E else 0x4B6B)
-        val species = (1..251).associateWith { text(names + (it - 1) * 10) }
+        // Species names are fixed 10-byte records; a full record has no terminator.
+        val species = (1..251).associateWith { text(names + (it - 1) * 10, 10) }
         val moves = list(if (crystal) 0x72 else 0x6C, if (crystal) 0x5E9D else 0x556B, 251)
         val items = list(if (crystal) 0x72 else 0x6C, 0x4000, 255)
         val mapBank = if (crystal) 0x72 else 0x27

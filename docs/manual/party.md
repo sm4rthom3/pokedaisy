@@ -12,7 +12,7 @@ The `PARTY` tab is your team, live. Glance down and you know who's hurt, who's p
 
 Each Pokémon gets a slot with its icon, name, level and HP bar, plus its status if it has one (poisoned, asleep and so on). A fainted Pokémon's slot changes colour the way the game shows it. The name is its nickname, as your game's own party screen shows it, on the Game Boy and Game Boy Advance games (the DS games show the kind of Pokémon for now). In SoulGold, whose party screen shows shiny Pokémon in their shiny colours, so does the icon here.
 
-German Game Boy games keep umlauts and ß in nicknames too.
+German Game Boy games keep umlauts and ß in nicknames too. In German Gold, Silver and Crystal, a full-length species name stays separate from the next name in the ROM.
 
 A Pokémon holding an item gets a small tag in its slot's top right corner with the item's icon and name, so you can see who holds what without opening each summary. The game's own little held-item marker sits by its icon too.
 

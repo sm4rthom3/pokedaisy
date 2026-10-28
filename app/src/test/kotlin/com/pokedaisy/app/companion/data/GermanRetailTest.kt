@@ -61,6 +61,30 @@ class GermanRetailTest {
     }
 
     @Test
+    fun `German Gen 2 full-width names do not consume the next record`() {
+        for ((code, bank, addr) in listOf(
+            Triple("GOLD_DE", 0x6C, 0x4B6B),
+            Triple("SILVER_DE", 0x6C, 0x4B6B),
+            Triple("CRYSTAL_DE", 0x14, 0x736E),
+        )) {
+            val rom = ByteArray(2 * 1024 * 1024) { 0x50 }
+            val names = bank * 0x4000 + addr - 0x4000
+            fun put(species: Int, name: String) = name.forEachIndexed { i, c ->
+                rom[names + (species - 1) * 10 + i] = (0x80 + c.code - 'A'.code).toByte()
+            }
+            put(160, "IMPERGATOR")
+            put(161, "WIESOR")
+            val previous = Gen1Dex.rom
+            try {
+                Gen1Dex.rom = rom
+                val namesRead = GermanGen2Text.forCode(code)!!.species
+                assertEquals(code, "IMPERGATOR", namesRead[160])
+                assertEquals(code, "WIESOR", namesRead[161])
+            } finally { Gen1Dex.rom = previous }
+        }
+    }
+
+    @Test
     fun `German Gen 2 battle menu reads all four wider columns`() {
         for (cfg in listOf(GEN2_GOLD_DE, GEN2_SILVER_DE, GEN2_CRYSTAL_DE)) {
             val memory = HashMap<Long, Byte>()
@@ -126,6 +150,8 @@ class GermanRetailTest {
                 val text = GermanGen2Text.forCode(cfg.gameCode)!!
                 assertEquals("BISASAM", text.species[1])
                 assertEquals("ENDIVIE", text.species[152])
+                assertEquals("$name full-width species name", "IMPERGATOR", text.species[160])
+                assertTrue("$name names stay inside their records", text.species.values.all { it.length <= 10 })
                 assertEquals("DONNERBLITZ", text.moveData[85]!!.name)
                 assertEquals("TRANK", text.items[18])
                 assertEquals("NEUBORKIA", text.mapSecData[1]!!.name)
