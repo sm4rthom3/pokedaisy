@@ -76,7 +76,13 @@ class HeartGoldGermanTest {
                 }
                 val expected = readGen4Telemetry(us, source)
                 val actual = readGen4Telemetry(german, target)
-                assertEquals(fixture, expected.party, actual.party)
+                assertEquals(fixture, expected.party.size, actual.party.size)
+                for ((before, after) in expected.party.zip(actual.party)) {
+                    assertArrayEquals(fixture, before.moves, after.moves)
+                    assertArrayEquals(fixture, before.pp, after.pp)
+                    // Mon contains IntArrays, whose data-class equality compares references.
+                    assertEquals(fixture, before.copy(moves = after.moves, pp = after.pp), after)
+                }
                 assertEquals(fixture, expected.items, actual.items)
                 assertEquals(expected.money, actual.money)
                 assertEquals(expected.mapNum, actual.mapNum)
