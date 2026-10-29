@@ -155,7 +155,7 @@ fun readGen2PartyMenu(r: MemoryReader, cfg: Gen2Config): GbPartyMenu? {
     if (cols != 1 || spacing != 0x20 || y !in 1..rows) return null
     val ty = top + 2 * (y - 1)
     if (ty >= 18 || left >= 20 || u8(r.readCoreMemory(cfg.tileMap + ty * 20 + left, 1), 0) != cfg.cursorTile) return null
-    if (top == GEN2_SUBMENU_TOP && left == (if (cfg.polished) POLISHED_SUBMENU_LEFT else GEN2_SUBMENU_TOP) && rows == 3) return GbPartyMenu(submenu = true, cursor = y - 1)
+    if (top == GEN2_SUBMENU_TOP && left == (if (cfg.polished) POLISHED_SUBMENU_LEFT else cfg.battlePartySubmenuLeft) && rows == 3) return GbPartyMenu(submenu = true, cursor = y - 1)
     if (top != 1 || left != 0) return null
     val count = u8(r.readCoreMemory(cfg.partyCount, 1), 0)
     val action = u8(r.readCoreMemory(cfg.partyMenuAction, 1), 0)
