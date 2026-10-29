@@ -108,7 +108,7 @@ class HeartGoldGermanTest {
                         bytes.copyInto(main, offset(addr)); return true
                     }
                 }
-                val body = u32(ptrBytes, 0) + cfg.bodyOff
+                val body = java.nio.ByteBuffer.wrap(ptrBytes).order(java.nio.ByteOrder.LITTLE_ENDIAN).int.toLong() + cfg.bodyOff
                 val pocket = body + cfg.bagOff
                 val steps = body + cfg.repelStepsOff!!
                 calls.write(pocket, ByteArray(cfg.pocketSizes[0] * 4))

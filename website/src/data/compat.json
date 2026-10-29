@@ -143,9 +143,9 @@
   ],
   "ds": [
     {"code": "CPUE", "rev": 1, "title": "Pokémon Platinum"},
+    {"code": "IPGD", "rev": 0, "title": "Pokémon Silberne Edition SoulSilver"},
     {"code": "IPGE", "rev": 0, "title": "Pokémon SoulSilver"},
     {"code": "IPKD", "rev": 0, "title": "Pokémon Goldene Edition HeartGold"},
-    {"code": "IPGD", "rev": 0, "title": "Pokémon Silberne Edition SoulSilver"},
     {"code": "IPKE", "rev": 0, "title": "Pokémon HeartGold"},
     {"code": "IRBO", "rev": 0, "title": "Pokémon Black"}
   ],
