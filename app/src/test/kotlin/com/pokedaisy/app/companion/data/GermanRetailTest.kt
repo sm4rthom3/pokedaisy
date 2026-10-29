@@ -107,6 +107,32 @@ class GermanRetailTest {
     }
 
     @Test
+    fun `German Gen 2 switch confirmation reads its wider submenu`() {
+        for (cfg in listOf(GEN2_GOLD_DE, GEN2_SILVER_DE, GEN2_CRYSTAL_DE)) {
+            val memory = HashMap<Long, Byte>()
+            fun put(addr: Long, vararg bytes: Int) = bytes.forEachIndexed { i, b -> memory[addr + i] = b.toByte() }
+            val reader = object : MemoryReader {
+                override fun readCoreMemory(addr: Long, size: Int) = ByteArray(size) { memory[addr + it] ?: 0 }
+            }
+            put(cfg.battleMode, 1)
+            // Captured on German Crystal: (12, 10), three rows, one column, two tiles per row.
+            // Gold / Silver have the same translated menu header in their carts.
+            put(cfg.menu2D, 12, 10, 3, 1, 0x40, 0, 0x20)
+            for (cursor in 0..2) {
+                put(cfg.menuCursor, cursor + 1, 1)
+                val tile = cfg.tileMap + (12 + cursor * 2) * 20 + 10
+                put(tile, 0xED)
+                assertEquals(cfg.gameCode, GbPartyMenu(submenu = true, cursor = cursor), readGen2PartyMenu(reader, cfg))
+                assertEquals(BATTLE_INPUT_PARTY_OPEN to GB_SUBMENU_CURSOR + cursor, readGen2BattleInput(reader, cfg))
+                put(tile, 0xEC) // A was taken: do not confirm the next menu while it is being drawn.
+                assertNull(readGen2PartyMenu(reader, cfg))
+            }
+            put(cfg.battleMode, 0)
+            assertNull(readGen2PartyMenu(reader, cfg))
+        }
+    }
+
+    @Test
     fun `German Red and Blue rebuild art and all dex pages from the cart`() {
         for ((name, cfg, art) in listOf(
             Triple("Pokemon - Rote Edition (Germany) (SGB Enhanced).gb", GEN1_RED_DE, Gen1Art.RED_DE),

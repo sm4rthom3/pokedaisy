@@ -79,6 +79,8 @@ data class Gen2Config(
     val gameCode: String = "",
     /** German BattleMenu uses a wider box (left cursor x=5; English x=9). */
     val battleMenuLeft: Int = 9,
+    /** BattleMonMenu's SWITCH / STATS / CANCEL cursor column (German: 10, English: 12). */
+    val battlePartySubmenuLeft: Int = 12,
 
 )
 
@@ -163,9 +165,9 @@ val GEN2_SILVER = GEN2_GOLD.copy(pokedex = POKEDEX_SILVER)
 
 /** German retail carts keep the English WRAM operands (checked with port_gen1.py), but move their
  * ROM tables and use metric Pokédex pages. Their battle menu begins at x=5. */
-val GEN2_GOLD_DE = GEN2_GOLD.copy(language = 'D', gameCode = "GOLD_DE", pokedex = POKEDEX_GOLD_DE, battleMenuLeft = 5)
-val GEN2_SILVER_DE = GEN2_SILVER.copy(language = 'D', gameCode = "SILVER_DE", pokedex = POKEDEX_SILVER_DE, battleMenuLeft = 5)
-val GEN2_CRYSTAL_DE = GEN2_CRYSTAL.copy(language = 'D', gameCode = "CRYSTAL_DE", pokedex = POKEDEX_CRYSTAL_DE, battleMenuLeft = 5)
+val GEN2_GOLD_DE = GEN2_GOLD.copy(language = 'D', gameCode = "GOLD_DE", pokedex = POKEDEX_GOLD_DE, battleMenuLeft = 5, battlePartySubmenuLeft = 10)
+val GEN2_SILVER_DE = GEN2_SILVER.copy(language = 'D', gameCode = "SILVER_DE", pokedex = POKEDEX_SILVER_DE, battleMenuLeft = 5, battlePartySubmenuLeft = 10)
+val GEN2_CRYSTAL_DE = GEN2_CRYSTAL.copy(language = 'D', gameCode = "CRYSTAL_DE", pokedex = POKEDEX_CRYSTAL_DE, battleMenuLeft = 5, battlePartySubmenuLeft = 10)
 
 /**
  * Pokémon Crystal Clear (ShockSlayer's open-world hack of Crystal): v2.6.0 and v2.5.11, each in a Standard Colors and a

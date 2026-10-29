@@ -100,7 +100,9 @@ change to any of the places listed under "Where it's decided" updates its rows h
    table.
 8. The Game Boy games' switch drives their own party menus (`GbPartySwitch.kt`: Yellow's HandleMenuInput list, Crystal's
    _2DMenu with its CANCEL row, the SWITCH / STATS / CANCEL menu after a pick, none after a faint) and finds the Pokémon
-   by species, OT ID and DVs (no personality in those games). Run headless through the real controller and readers
+   by species, OT ID and DVs (no personality in those games). German Gold / Silver / Crystal use column 10 for the
+   translated switch submenu (English 12), checked in their menu headers and on the Thor in Crystal. The reader and
+   controller have ROM-free regression tests for all three. Run headless through the real controller and readers
    against the running game: English Yellow and all four European ones (a switch from PkMn; English and German after
    a faint too, the one already out refused before a press), Crystal rev 1 (from PKMN, from inside its SWITCH menu,
    after a faint), Crystal Clear 2.6.0 and Prism (from the menu and after a faint). Crystal rev 0 / AU and Crystal

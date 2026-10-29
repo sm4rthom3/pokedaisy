@@ -29,6 +29,8 @@ What each button does:
 - `POKéMON` opens your party on the companion to switch (see [Switching during a battle](#switching-during-a-battle)).
 - `RUN` runs away, and clears the "got away" message for you too.
 
+In German Gold, Silver and Crystal, switching also confirms the game's wider switch menu for you.
+
 Elite Redux has no bag in its battle menu, so there the tab shows `RUN` and `POKéMON` side by side under `FIGHT`, with no `BAG`.
 
 > [!NOTE]
