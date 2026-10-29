@@ -65,13 +65,12 @@ test('DS: Platinum rev 1, HeartGold / SoulSilver, by the header', () => {
   assert.deepEqual(ds('CPUE', 1), { status: 'supported', title: 'Pokémon Platinum', family: 'Nintendo DS' });
   assert.deepEqual(ds('CPUE', 0), { status: 'unsupported', reason: 'revision', base: 'Pokémon Platinum' });
   assert.equal(ds('IPKE', 0).title, 'Pokémon HeartGold');
-  assert.deepEqual(ds('IPKD', 0), { status: 'supported', title: 'Pokémon Goldene Edition HeartGold', family: 'Nintendo DS' });
-  assert.equal(ds('IPKD', 1).reason, 'revision');
-  assert.equal(ds('IPGD', 0).title, 'Pokémon Silberne Edition SoulSilver');
-  assert.equal(ds('IPGD', 1).reason, 'revision');
-  assert.equal(ds('CPUD', 0).title, 'Pokémon Platin-Edition');
-  assert.equal(ds('CPUD', 1).reason, 'revision');
   assert.equal(ds('IPGE', 0).title, 'Pokémon SoulSilver');
+  assert.deepEqual(ds('IPKD', 0), { status: 'supported', title: 'Pokémon Goldene Edition HeartGold', family: 'Nintendo DS' });
+  assert.deepEqual(ds('IPGD', 0), { status: 'supported', title: 'Pokémon Silberne Edition SoulSilver', family: 'Nintendo DS' });
+  for (const code of ['IPKD', 'IPGD']) {
+    for (const rev of [1, 255]) assert.equal(ds(code, rev).reason, 'revision');
+  }
   assert.equal(ds('ADAE', 0).reason, 'ds');
 });
 
@@ -100,19 +99,6 @@ test('Game Boy Color: Polished Crystal, every 3.2.x release build', () => {
 test('Game Boy Color: Crystal, all three English releases', () => {
   for (const sha1 of ['f4cd194bdee0d04ca4eac29e09b8e4e9d818c133', 'f2f52230b536214ef7c9924f483392993e226cfb', 'a0fc810f1d4e124434f7be2c989ab5b5892ddf36']) {
     assert.equal(verdict(data, { platform: 'gb', sha1 }).title, 'Pokémon Crystal');
-  }
-});
-
-test('German Game Boy retail ports', () => {
-  const carts = {
-    '87d523fe1a0c548db7c5477b451ddec1eb083c06': 'Pokémon Rote Edition',
-    '20e72dc6f41493eee1fdd0cef54214e6c3389688': 'Pokémon Blaue Edition',
-    '9254195d461ea942eaaa08cc4b83de3cf82aea0d': 'Pokémon Goldene Edition',
-    '8ecc58d621faaedf2a934bd2583d527220df7bb9': 'Pokémon Silberne Edition',
-    'accb584293ba056152f1fd908439b019017ff2fe': 'Pokémon Kristall-Edition',
-  };
-  for (const [sha1, title] of Object.entries(carts)) {
-    assert.equal(verdict(data, { platform: 'gb', sha1 }).title, title);
   }
 });
 

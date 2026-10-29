@@ -10,9 +10,9 @@ change to any of the places listed under "Where it's decided" updates its rows h
 | ---- | ------- | :----: | :------------: | :-------------: | :------------: | :---------: | :-: | :----------: | :---------: | :---------: | :-------------: | :---------: | :----------: | :---------: |
 | Yellow (GB) | USA/Europe | ✅ ¹² | ✅ | ✅ ¹ | ✅ ⁸ | — | ✅ ¹³ | — | n/a | n/a | ✅ ¹³ | ✅ ¹³ | — | n/a |
 | Yellow (GB) | DE / FR / IT / ES | n/a | ✅ | ✅ ¹ | ✅ ⁸ | — | ✅ ¹³ | — | n/a | n/a | ✅ ¹³ | ✅ ¹³ | — | n/a |
-| Red / Blue (GB) | USA/Europe, Germany | n/a | ✅ | ✅ ¹ | ✅ ⁸ | — | ✅ ¹³ | — | n/a | n/a | ✅ ¹³ | ✅ ¹³ | — | n/a |
-| Gold / Silver (GBC) | USA/Europe, Germany | n/a | ✅ | ✅ ¹ | ✅ ⁸ | — | — | — | n/a | n/a | n/a | n/a | — | n/a |
-| Crystal (GBC) | USA, USA/Europe rev 1, AU, Germany | ✅ ¹² | ✅ | ✅ ¹ | ✅ ⁸ | — | ✅ ¹³ | — | n/a | n/a | ✅ ¹³ | ✅ ¹³ | — | n/a |
+| Red / Blue (GB) | USA/Europe | n/a | ✅ | ✅ ¹ | ✅ ⁸ | — | ✅ ¹³ | — | n/a | n/a | ✅ ¹³ | ✅ ¹³ | — | n/a |
+| Gold / Silver (GBC) | USA/Europe | n/a | ✅ | ✅ ¹ | ✅ ⁸ | — | — | — | n/a | n/a | n/a | n/a | — | n/a |
+| Crystal (GBC) | USA, USA/Europe rev 1, AU | ✅ ¹² | ✅ | ✅ ¹ | ✅ ⁸ | — | ✅ ¹³ | — | n/a | n/a | ✅ ¹³ | ✅ ¹³ | — | n/a |
 | Crystal Clear (GBC) | 2.5.11, 2.6.0 (4 builds) | n/a | ✅ | ✅ ¹ | ✅ ⁸ | — | — | — | n/a | n/a | n/a | n/a | — | n/a |
 | Prism (GBC) | 0.95 build 254 | n/a | ✅ | ✅ ¹ | ✅ ⁸ | — | — | — | n/a | n/a | n/a | n/a | ✅ ¹⁶ | n/a |
 | Polished Crystal (GBC) | 3.2.0 - 3.2.3 (16 builds) | n/a | ✅ | ✅ ¹ | ✅ ⁸ | — | — | — | n/a | n/a | n/a | n/a | ✅ ¹⁶ | n/a |
@@ -28,9 +28,9 @@ change to any of the places listed under "Where it's decided" updates its rows h
 | Ruby / Sapphire | USA rev 1 and 2 | ✅ | ✅ | ✅ | — | ✅ | ✅ | — | ◐ ⁵ | ✅ | ✅ | ✅ | ✅ ¹⁵ | ✅ ¹⁸ |
 | Ruby / Sapphire | USA rev 0, ES / DE / FR / IT | ✅ | ✅ | ✅ | — | ✅ | ✅ | — | ◐ ⁵ | ✅ | ✅ | ✅ | ✅ ¹⁵ | ✅ ¹⁸ |
 | Ruby / Sapphire | JP | ✅ | ✅ | ✅ | — | ✅ | ✅ | — | ◐ ⁵ | ✅ | ✅ | ✅ | ✅ ¹⁵ | ✅ ¹⁸ |
-| Platinum (DS) | USA rev 1, Germany rev 0 | ✅ ¹⁴ | — | — | — | — | ✅ ¹⁴ | — | ✅ ¹⁴ | ✅ ¹⁴ | ✅ ¹⁴ | ✅ ¹⁴ | — | n/a |
-| HeartGold (DS) | USA, Germany | ✅ ¹⁴ | — | — | — | — | ✅ ¹⁴ | — | ✅ ¹⁴ | ✅ ¹⁴ | ✅ ¹⁴ | ✅ ¹⁴ | — | n/a |
-| SoulSilver (DS) | USA, Germany | ✅ ¹⁴ | — | — | — | — | ✅ ¹⁴ | — | ✅ ¹⁴ | ✅ ¹⁴ | ✅ ¹⁴ | ✅ ¹⁴ | — | n/a |
+| Platinum (DS) | USA rev 1 | ✅ ¹⁴ | — | — | — | — | ✅ ¹⁴ | — | ✅ ¹⁴ | ✅ ¹⁴ | ✅ ¹⁴ | ✅ ¹⁴ | — | n/a |
+| HeartGold (DS) | USA, Germany rev 0 | ✅ ¹⁴ | — | — | — | — | ✅ ¹⁴ | — | ✅ ¹⁴ | ✅ ¹⁴ | ✅ ¹⁴ | ✅ ¹⁴ | — | n/a |
+| SoulSilver (DS) | USA, Germany rev 0 | ✅ ¹⁴ | — | — | — | — | ✅ ¹⁴ | — | ✅ ¹⁴ | ✅ ¹⁴ | ✅ ¹⁴ | ✅ ¹⁴ | — | n/a |
 | Amethyst | 1.3.0, 1.4.1 | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | — | ✅ | ✅ | ✅ | ✅ | — | — |
 | Ash Gray | 4.5.3, Fork Bug Fix 1.0 | ✅ | ✅ | ✅ | ✅ | ✅ | ◐ ⁹ | — | ◐ ⁹ | ◐ ⁹ | ◐ ⁹ | ◐ ⁹ | — | — |
 | Celia's Stupid Romhack | 1.1.4 | ✅ | ✅ | ✅ | ✅ | — | — | — | ✅ | ✅ | ✅ | — | ✅ ¹⁵ | — |
@@ -100,9 +100,7 @@ change to any of the places listed under "Where it's decided" updates its rows h
    table.
 8. The Game Boy games' switch drives their own party menus (`GbPartySwitch.kt`: Yellow's HandleMenuInput list, Crystal's
    _2DMenu with its CANCEL row, the SWITCH / STATS / CANCEL menu after a pick, none after a faint) and finds the Pokémon
-   by species, OT ID and DVs (no personality in those games). German Gold / Silver / Crystal use column 10 for the
-   translated switch submenu (English 12), checked in their menu headers and on the Thor in Crystal. The reader and
-   controller have ROM-free regression tests for all three. Run headless through the real controller and readers
+   by species, OT ID and DVs (no personality in those games). Run headless through the real controller and readers
    against the running game: English Yellow and all four European ones (a switch from PkMn; English and German after
    a faint too, the one already out refused before a press), Crystal rev 1 (from PKMN, from inside its SWITCH menu,
    after a faint), Crystal Clear 2.6.0 and Prism (from the menu and after a faint). Crystal rev 0 / AU and Crystal

@@ -3,10 +3,6 @@ package com.pokedaisy.app
 import com.pokedaisy.app.companion.data.BATTLE_INPUT_PARTY_OPEN
 import com.pokedaisy.app.companion.data.GEN1_YELLOW
 import com.pokedaisy.app.companion.data.GEN2_CRYSTAL
-import com.pokedaisy.app.companion.data.GEN2_CRYSTAL_DE
-import com.pokedaisy.app.companion.data.GEN2_GOLD_DE
-import com.pokedaisy.app.companion.data.GEN2_SILVER_DE
-import com.pokedaisy.app.companion.data.Gen2Config
 import com.pokedaisy.app.companion.data.Gen1PartySwitch
 import com.pokedaisy.app.companion.data.Gen2PartySwitch
 import com.pokedaisy.app.companion.data.MemoryReader
@@ -32,7 +28,7 @@ class BattleInputControllerGbTest {
     private enum class Mode { ACTION, OPENING, LIST, SUB, MOVES, BUSY }
 
     /** A Yellow ([gen] 1) or Crystal ([gen] 2) battle: the RAM the readers see, and the menus reacting to presses. */
-    private class Game(val gen: Int, val count: Int, val cfg: Gen2Config = GEN2_CRYSTAL) : MemoryReader {
+    private class Game(val gen: Int, val count: Int) : MemoryReader {
         val ram = ByteArray(0x20000)
         val presses = mutableListOf<String>()
         var mode = Mode.ACTION
@@ -57,7 +53,7 @@ class BattleInputControllerGbTest {
                 put(o + 27, dvs shr 8, dvs and 0xFF)
                 put(o + 33, 50)
             } else {
-                val o = cfg.partyMons + slot * 48
+                val o = GEN2_CRYSTAL.partyMons + slot * 48
                 put(o, species)
                 put(o + 6, otId shr 8, otId and 0xFF)
                 put(o + 21, dvs shr 8, dvs and 0xFF)
@@ -67,12 +63,12 @@ class BattleInputControllerGbTest {
         }
 
         fun key(slot: Int): Long = if (gen == 1) Gen1PartySwitch(GEN1_YELLOW).party(this)[slot].key
-            else Gen2PartySwitch(cfg).party(this)[slot].key
+            else Gen2PartySwitch(GEN2_CRYSTAL).party(this)[slot].key
 
         init {
             for (i in 0 until count) mon(i, species = 0x20 + i, hp = 40)
             if (gen == 1) { put(GEN1_YELLOW.partyCount, count); put(GEN1_YELLOW.isInBattle, 1) }
-            else { put(cfg.partyCount, count); put(cfg.battleMode, 1) }
+            else { put(GEN2_CRYSTAL.partyCount, count); put(GEN2_CRYSTAL.battleMode, 1) }
             draw()
         }
 
@@ -86,7 +82,7 @@ class BattleInputControllerGbTest {
 
         /** The menu variables and the screen's ▶ for the current mode (Gen 1's HandleMenuInput / Gen 2's _2DMenu). */
         fun draw() {
-            val tiles = if (gen == 1) GEN1_YELLOW.tileMap else cfg.tileMap
+            val tiles = if (gen == 1) GEN1_YELLOW.tileMap else GEN2_CRYSTAL.tileMap
             for (i in 0 until 360) ram[tiles.toInt() + i] = 0x7F
             fun arrow(x: Int, y: Int) = put(tiles + y * 20 + x, 0xED)
             if (gen == 1) {
@@ -100,20 +96,15 @@ class BattleInputControllerGbTest {
                     Mode.OPENING, Mode.MOVES, Mode.BUSY -> Unit
                 }
             } else {
-                val m = cfg.menu2D
-                put(cfg.partyMenuAction, if (forced) 2 else 0)
-                put(cfg.curBattleMon, out)
+                val m = GEN2_CRYSTAL.menu2D
+                put(GEN2_CRYSTAL.partyMenuAction, if (forced) 2 else 0)
+                put(GEN2_CRYSTAL.curBattleMon, out)
                 when (mode) {
-                    Mode.ACTION -> {
-                        val width = if (cfg.language == 'D') 7 else 6
-                        put(m, 14, cfg.battleMenuLeft, 2, 2, 0, 0, 0x20 + width)
-                        put(cfg.menuCursor, 1 + (actionCell shr 1), 1 + (actionCell and 1))
-                        arrow(cfg.battleMenuLeft + width * (actionCell and 1), 14 + 2 * (actionCell shr 1))
-                    }
-                    Mode.LIST -> { put(m, 1, 0, count + 1, 1, 0, 0, 0x20); put(cfg.menuCursor, cursor + 1, 1); arrow(0, 1 + 2 * cursor) }
-                    Mode.SUB -> { put(m, 12, cfg.battlePartySubmenuLeft, 3, 1, 0, 0, 0x20); put(cfg.menuCursor, cursor + 1, 1); arrow(cfg.battlePartySubmenuLeft, 12 + 2 * cursor) }
+                    Mode.ACTION -> { put(m, 14, 9, 2, 2, 0, 0, 0x26); put(GEN2_CRYSTAL.menuCursor, 1 + (actionCell shr 1), 1 + (actionCell and 1)); arrow(9 + 6 * (actionCell and 1), 14 + 2 * (actionCell shr 1)) }
+                    Mode.LIST -> { put(m, 1, 0, count + 1, 1, 0, 0, 0x20); put(GEN2_CRYSTAL.menuCursor, cursor + 1, 1); arrow(0, 1 + 2 * cursor) }
+                    Mode.SUB -> { put(m, 12, 12, 3, 1, 0, 0, 0x20); put(GEN2_CRYSTAL.menuCursor, cursor + 1, 1); arrow(12, 12 + 2 * cursor) }
                     // MoveSelectionScreen: a column from (5, 13), a row per move.
-                    Mode.MOVES -> { put(m, 13, 5, moves, 1, 0, 0, 0x10); put(cfg.menuCursor, cursor + 1, 1); arrow(5, 13 + cursor) }
+                    Mode.MOVES -> { put(m, 13, 5, moves, 1, 0, 0, 0x10); put(GEN2_CRYSTAL.menuCursor, cursor + 1, 1); arrow(5, 13 + cursor) }
                     Mode.OPENING, Mode.BUSY -> Unit
                 }
             }
@@ -189,7 +180,7 @@ class BattleInputControllerGbTest {
     private fun controller(game: Game) = BattleInputController(input, game, log = {}).apply {
         gen1 = true
         switchAddrs = BattleInputController.SwitchAddrs(
-            gb = if (game.gen == 1) Gen1PartySwitch(GEN1_YELLOW) else Gen2PartySwitch(game.cfg),
+            gb = if (game.gen == 1) Gen1PartySwitch(GEN1_YELLOW) else Gen2PartySwitch(GEN2_CRYSTAL),
         )
     }
 
@@ -198,7 +189,7 @@ class BattleInputControllerGbTest {
         var last = 0
         repeat(frames) { f ->
             if (f % 4 == 0) {
-                val (state, cursor) = if (game.gen == 1) readGen1BattleInput(game, GEN1_YELLOW) else readGen2BattleInput(game, game.cfg)
+                val (state, cursor) = if (game.gen == 1) readGen1BattleInput(game, GEN1_YELLOW) else readGen2BattleInput(game, GEN2_CRYSTAL)
                 c.onState(0, state, cursor)
             }
             c.tick()
@@ -206,19 +197,6 @@ class BattleInputControllerGbTest {
             val new = now and last.inv()
             last = now
             game.step(KEYS.filter { (bit, _) -> new and bit != 0 }.map { it.second })
-        }
-    }
-
-    @Test fun germanGen2ConfirmsSwitchWithoutManualA() {
-        for (cfg in listOf(GEN2_GOLD_DE, GEN2_SILVER_DE, GEN2_CRYSTAL_DE)) {
-            val game = Game(gen = 2, count = 6, cfg = cfg)
-            val c = controller(game)
-            run(c, game, 8)
-            c.switchTo(game.key(3))
-            run(c, game, 240)
-            assertEquals(cfg.gameCode, 3, game.out)
-            assertFalse(cfg.gameCode, c.isBusy)
-            assertTrue(cfg.gameCode, game.presses.count { it == "A" } >= 3) // Includes dropped submenu A.
         }
     }
 
@@ -297,7 +275,7 @@ class BattleInputControllerGbTest {
         c.switchTo(game.key(1))
         run(c, game, 600)
         assertEquals(0, game.out)
-        assertEquals(BATTLE_INPUT_PARTY_OPEN, readGen2BattleInput(game, game.cfg).first)
+        assertEquals(BATTLE_INPUT_PARTY_OPEN, readGen2BattleInput(game, GEN2_CRYSTAL).first)
         val afterLastA = game.presses.takeLastWhile { it != "A" }
         assertEquals(emptyList<String>(), afterLastA)
         assertFalse(c.isBusy)

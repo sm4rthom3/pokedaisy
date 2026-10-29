@@ -287,11 +287,11 @@ shows a "not supported" notice).
 
 | Game                           | Version                    | Party | Bag | Battle | Map |   Dex   | Guide |
 | ------------------------------ | -------------------------- | :---: | :-: | :----: | :-: | :-----: | :---: |
-| Red / Blue (GB)                | USA/Europe, Germany                 |  ✅   | ✅  |   ◐    | ✅  |   ✅    |   —   |
+| Red / Blue (GB)                | USA/Europe                 |  ✅   | ✅  |   ◐    | ✅  |   ✅    |   —   |
 | Yellow (GB)                    | USA/Europe                 |  ✅   | ✅  |   ◐    | ✅  |   ✅    |   —   |
 | Yellow (GB)                    | DE / FR / IT / ES          |  ✅   | ✅  |   ◐    | ✅  |   ✅    |   —   |
-| Gold / Silver (GBC)            | USA/Europe, Germany                 |  ✅   | ✅  |   ◐    | ✅  |   ✅    |   —   |
-| Crystal (GBC)                  | USA, USA/Europe rev 1, AU, Germany  |  ✅   | ✅  |   ◐    | ✅  |   ✅    |   —   |
+| Gold / Silver (GBC)            | USA/Europe                 |  ✅   | ✅  |   ◐    | ✅  |   ✅    |   —   |
+| Crystal (GBC)                  | USA, USA/Europe rev 1, AU  |  ✅   | ✅  |   ◐    | ✅  |   ✅    |   —   |
 | Crystal Clear (GBC)            | 2.5.11, 2.6.0 (4 builds)   |  ✅   | ✅  |   ◐    | ✅  |   ✅    |   —   |
 | Prism (GBC)                    | 0.95 build 254             |  ✅   | ✅  |   ◐    | ✅  |   ✅    |   —   |
 | Polished Crystal (GBC)         | 3.2.0-3.2.3 (16 builds)    |  ✅   | ✅  |   ◐    | ✅  |   ✅    |  ✅   |
@@ -305,9 +305,9 @@ shows a "not supported" notice).
 | Ruby                           | ES/DE/FR/IT/JP, rev 0-1    |  ✅   | ✅  |   ◐    | ✅  |   ✅    |  ✅   |
 | Sapphire                       | USA, rev 0, 1 and 2        |  ✅   | ✅  |   ◐    | ✅  |   ✅    |  ✅   |
 | Sapphire                       | ES/DE/FR/IT/JP, rev 0-1    |  ✅   | ✅  |   ◐    | ✅  |   ✅    |  ✅   |
-| Platinum (DS)                  | USA rev 1, Germany rev 0                  |  ✅   | ✅  |   ◐    | ✅  |   ✅    |  ✅   |
-| HeartGold (DS)                 | USA, Germany               |  ✅   | ✅  |   —    | ✅  |   ✅    |  ✅   |
-| SoulSilver (DS)                | USA, Germany               |  ✅   | ✅  |   —    | ✅  |   ✅    |  ✅   |
+| Platinum (DS)                  | USA rev 1                  |  ✅   | ✅  |   ◐    | ✅  |   ✅    |  ✅   |
+| HeartGold (DS)                 | USA, Germany rev 0         |  ✅   | ✅  |   —    | ✅  |   ✅    |  ✅   |
+| SoulSilver (DS)                | USA, Germany rev 0         |  ✅   | ✅  |   —    | ✅  |   ✅    |  ✅   |
 | Unbound                        | 2.1.1.1                    |  ✅   | ✅  |   ◐    | ✅  |   ✅    |  ✅   |
 | Unbound                        | 2.1.1.1 French             |  ✅   | ✅  |   ◐    | ✅  |   ✅    |  ✅   |
 | Radical Red                    | 4.1                        |  ✅   | ✅  |   ◐    | ✅  |   ✅    |  ✅   |
@@ -354,7 +354,7 @@ shows its own Pokémon, moves, types, six town maps and its own Pokédex (its 25
 Crystal shows its own Pokémon (regional forms included), moves, types, items, its Johto, Kanto and Orange Islands maps and
 its 289 in National order; its faithful builds keep the original games' types and moves, as the game does.
 Platinum, HeartGold and SoulSilver are the DS games the companion reads, in the USA release listed (Platinum's
-revision 1), plus German HeartGold (IPKD rev 0). Their pictures, names, Pokédex pages and maps come from your cart. Platinum's battles show in the BATTLE tab,
+revision 1), plus German HeartGold and SoulSilver (IPKD / IPGD rev 0). Their pictures, names, Pokédex pages and maps come from your cart. Platinum's battles show in the BATTLE tab,
 HeartGold's and SoulSilver's not yet, and on the DS the battle buttons don't press the game's menus yet. On a
 one-screen device a DS game shows its top screen; the touch screen needs a second screen for now.
 Team Rocket Dragonsden is DragonsdenTV's Team Rocket Edition: Dragonsden Version, not FireRed Rocket Edition; its

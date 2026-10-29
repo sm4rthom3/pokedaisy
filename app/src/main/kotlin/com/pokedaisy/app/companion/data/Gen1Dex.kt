@@ -85,13 +85,6 @@ val POKEDEX_YELLOW_ES = POKEDEX_YELLOW_METRIC.copy(gen1 = GEN1_DEX_YELLOW_ES)
 val POKEDEX_RED = POKEDEX_YELLOW.copy(gen1 = GEN1_DEX_RED)
 val POKEDEX_BLUE = POKEDEX_YELLOW.copy(gen1 = GEN1_DEX_RED.copy())
 
-private val GEN1_DEX_RED_DE = GEN1_DEX_RED.copy(
-    dexEntryPointers = 0x10 to 0x447A, monsterPalettes = 0x1C to 0x65A2, cgbPalettes = 0x1C to 0x663A,
-    owned = 0xD2FC, seen = 0xD30F, metric = true, charset = Gen1Charset.DF,
-)
-val POKEDEX_RED_DE = POKEDEX_YELLOW_METRIC.copy(gen1 = GEN1_DEX_RED_DE)
-val POKEDEX_BLUE_DE = POKEDEX_YELLOW_METRIC.copy(gen1 = GEN1_DEX_RED_DE.copy())
-
 fun readGen1PokedexState(r: MemoryReader, t: Gen1DexTables, tables: PokedexTables): PokedexState {
     val owned = r.readCoreMemory(t.owned, 19)
     val seen = r.readCoreMemory(t.seen, 19)

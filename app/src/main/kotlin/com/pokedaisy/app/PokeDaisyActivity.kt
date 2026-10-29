@@ -1604,7 +1604,7 @@ class PokeDaisyActivity : Activity() {
         romIsNds = nds
         if (::portraitPanel.isInitialized) portraitPanel.ds = nds
         dsWorld = if (!nds) null else when (RomIdentity.ndsGameCode(r)) {
-            "CPUE", "CPUD" -> com.pokedaisy.app.companion.data.PLATINUM_WORLD
+            "CPUE" -> com.pokedaisy.app.companion.data.PLATINUM_WORLD
             "IPKE", "IPKD" -> com.pokedaisy.app.companion.data.HEARTGOLD_WORLD
             "IPGE", "IPGD" -> com.pokedaisy.app.companion.data.SOULSILVER_WORLD
             else -> null

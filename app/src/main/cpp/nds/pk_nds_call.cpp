@@ -67,31 +67,8 @@ const CallFns PLATINUM = {
     0, 0,
 };
 
-// German Platinum rev 0: same script / Fly ABI, functions relocated in its ARM9.
-const CallFns PLATINUM_DE = [] {
-    CallFns f = PLATINUM;
-    f.scriptManagerSet = 0x0203E925;
-    f.fieldTaskGetEnv = 0x02050B09;
-    f.scriptContextCreateAndStart = 0x0203EB5D;
-    f.scriptContextJump = 0x0203E8BD;
-    f.stringTemplateNew = 0x0200B37D;
-    f.stringInit = 0x02023801;
-    f.scriptManagerGetMemberPtr = 0x0203F005;
-    f.fieldMovesSetUsableMoves = 0x020707BD;
-    f.fieldMovesCheckFly = 0x020709E5;
-    f.checkFlyLocationUnlocked = 0x0203A9C5;
-    f.saveDataGetParty = 0x0207A309;
-    f.partyGetPokemonBySlotIndex = 0x0207A19D;
-    f.flyContextNew = 0x020706E1;
-    f.fieldMovesFlyTask = 0x02070715;
-    f.fieldSystemCreateTask = 0x020509A9;
-    f.journalCreateEventUsedMove = 0x0202BE71;
-    f.journalSaveData = 0x0202B7C9;
-    return f;
-}();
-
 // pret/pokeheartgold's .xMAP: every address the same in the US HeartGold / SoulSilver builds and German
-// HeartGold rev 0 (checked against its ARM9, including Task_RunScripts' calls and environment layout).
+// HeartGold / SoulSilver rev 0 (checked against its ARM9, including Task_RunScripts' calls and environment layout).
 const CallFns HEARTGOLD = {
     0, 0, 0,
     0x0203FE0D,   // ScriptJump
@@ -140,7 +117,7 @@ uint32_t lastResults[PK_NDS_MAX_RESULTS];
 const CallFns* fnsFor(const PkNdsFieldGame* game)
 {
     if (!game || !game->fieldMapMain) return nullptr;
-    return game->callSet == 1 ? &PLATINUM : game->callSet == 2 ? &HEARTGOLD : game->callSet == 3 ? &PLATINUM_DE : nullptr;
+    return game->callSet == 1 ? &PLATINUM : game->callSet == 2 ? &HEARTGOLD : nullptr;
 }
 
 u32 rd32(NDS* nds, u32 a)

@@ -24,7 +24,6 @@ object Gen1Art {
     const val YELLOW_PLAYER = "regionmap/player_yellow.png"
     /** The town map, where MapScreen loads region maps from ([activeRegionMapImages] "yellow"). */
     const val YELLOW_TOWN_MAP = "regionmap/yellow.png"
-    const val RED_BLUE_FONT_DE = "gen1/red-blue-font-d.ttf"
     const val RED_BLUE_FONT = "gen1/red-blue-font.ttf"
     const val RED_BLUE_ICONS = "gen1/red_blue/pokemon"
     /** Red / Blue's town map and player ([activeRegionMapImages] "red_blue"), in their Super Game Boy colours. */
@@ -105,32 +104,28 @@ object Gen1Art {
      * there is white, light blue and black (FLY's map, headless). Their party icons have no PIKACHU shape: 14
      * icon loads a frame.
      */
-    private fun redBlue(sha1: String, german: Boolean = false) = Gen1ArtTables(
+    private fun redBlue(sha1: String) = Gen1ArtTables(
         sha1 = sha1,
         font = 0x04 to 0x5A80,
-        fontPath = if (german) RED_BLUE_FONT_DE else RED_BLUE_FONT,
-        iconPointers = 0x1C to if (german) 0x579A else 0x57C0,
+        fontPath = RED_BLUE_FONT,
+        iconPointers = 0x1C to 0x57C0,
         iconPointerCount = 28,
-        monPartyData = 0x1C to if (german) 0x58E7 else 0x590D,
+        monPartyData = 0x1C to 0x590D,
         dexCount = 151,
         iconsDir = RED_BLUE_ICONS,
         iconColors = intArrayOf(0xFFFFEFFF.toInt(), 0xFFF7B58C.toInt(), 0xFF181010.toInt()),
-        townMap = 0x1C to if (german) 0x50FE else 0x5100,
-        townMapTiles = 0x04 to if (german) 0x65B8 else 0x65A8,
+        townMap = 0x1C to 0x5100,
+        townMapTiles = 0x04 to 0x65A8,
         townMapPath = RED_BLUE_TOWN_MAP,
         townMapColors = intArrayOf(0xFFFFEFFF.toInt(), 0xFFA5D6FF.toInt(), 0xFF8CBD52.toInt(), 0xFF181010.toInt()),
         playerSprite = 0x05 to 0x4180,
         playerPath = RED_BLUE_PLAYER,
-        charset = if (german) Gen1Charset.DF else Gen1Charset.EN,
         playerColors = intArrayOf(0, 0xFFFFEFFF.toInt(), 0xFFA5D6FF.toInt(), 0xFF181010.toInt()),
     )
     val RED = redBlue(TelemetrySampler.RED_SHA1)
     val BLUE = redBlue(TelemetrySampler.BLUE_SHA1)
 
-    val RED_DE = redBlue(TelemetrySampler.RED_DE_SHA1, german = true)
-    val BLUE_DE = redBlue(TelemetrySampler.BLUE_DE_SHA1, german = true)
-
-    private val GAMES = listOf(YELLOW, YELLOW_DE, YELLOW_FR, YELLOW_IT, YELLOW_ES, RED, BLUE, RED_DE, BLUE_DE)
+    private val GAMES = listOf(YELLOW, YELLOW_DE, YELLOW_FR, YELLOW_IT, YELLOW_ES, RED, BLUE)
 
     private fun off(bank: Int, addr: Int) = if (bank == 0) addr else bank * 0x4000 + (addr - 0x4000)
 

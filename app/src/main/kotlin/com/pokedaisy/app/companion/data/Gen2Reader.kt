@@ -74,14 +74,6 @@ data class Gen2Config(
     val berriesMax: Int = 0,
     /** A faithful build: its own species types, moves and item names over the normal ones (ActiveTables). */
     val polishedFaithful: Boolean = false,
-    /** Retail cart language and text-table key; English / hacks keep the defaults. */
-    val language: Char = 'E',
-    val gameCode: String = "",
-    /** German BattleMenu uses a wider box (left cursor x=5; English x=9). */
-    val battleMenuLeft: Int = 9,
-    /** BattleMonMenu's SWITCH / STATS / CANCEL cursor column (German: 10, English: 12). */
-    val battlePartySubmenuLeft: Int = 12,
-
 )
 
 /** Crystal's Mail (FLOWER_MAIL 0x9E, SURF_MAIL 0xB5 .. MIRAGE_MAIL 0xBD): the party menu marks a mon holding one with Mail's icon. */
@@ -162,12 +154,6 @@ val GEN2_GOLD = Gen2Config(
     pokedex = POKEDEX_GOLD,
 )
 val GEN2_SILVER = GEN2_GOLD.copy(pokedex = POKEDEX_SILVER)
-
-/** German retail carts keep the English WRAM operands (checked with port_gen1.py), but move their
- * ROM tables and use metric Pokédex pages. Their battle menu begins at x=5. */
-val GEN2_GOLD_DE = GEN2_GOLD.copy(language = 'D', gameCode = "GOLD_DE", pokedex = POKEDEX_GOLD_DE, battleMenuLeft = 5, battlePartySubmenuLeft = 10)
-val GEN2_SILVER_DE = GEN2_SILVER.copy(language = 'D', gameCode = "SILVER_DE", pokedex = POKEDEX_SILVER_DE, battleMenuLeft = 5, battlePartySubmenuLeft = 10)
-val GEN2_CRYSTAL_DE = GEN2_CRYSTAL.copy(language = 'D', gameCode = "CRYSTAL_DE", pokedex = POKEDEX_CRYSTAL_DE, battleMenuLeft = 5, battlePartySubmenuLeft = 10)
 
 /**
  * Pokémon Crystal Clear (ShockSlayer's open-world hack of Crystal): v2.6.0 and v2.5.11, each in a Standard Colors and a
@@ -394,9 +380,9 @@ fun decodeGen2PartyMon(raw: ByteArray, off: Int, cfg: Gen2Config, egg: Boolean =
  * [raw]'s nickname at [off] (11 bytes) in the game's charmap (null = blank). Crystal ends names with 0x50; Polished Crystal's
  * own charmap ends them with 0x53 (or <DONE> 0x52), as its player / box names do.
  */
-private fun gen2Nickname(raw: ByteArray, off: Int, polished: Boolean, language: Char): String? {
+private fun gen2Nickname(raw: ByteArray, off: Int, polished: Boolean): String? {
     if (off + GEN2_NAME_LEN > raw.size) return null
-    val chars = Gen2Art.chars(polished, language)
+    val chars = Gen2Art.chars(polished)
     return buildString {
         for (i in 0 until GEN2_NAME_LEN) {
             val c = raw[off + i].toInt() and 0xFF
@@ -427,6 +413,7 @@ fun decodeGen2BattleMon(raw: ByteArray, speciesCount: Int = 251): BattleMon? {
 }
 
 private const val BATTLE_MENU_TOP = 0x0E      // BattleMenu's _2DMenu: 2 x 2 from (9, 14), 6 across / 2 down
+private const val BATTLE_MENU_LEFT = 0x09
 private const val MOVE_MENU_TOP = 0x0D        // MoveSelectionScreen: a column from (5, 13)
 private const val MOVE_MENU_LEFT = 0x05
 
@@ -454,7 +441,7 @@ fun readGen2BattleInput(r: MemoryReader, cfg: Gen2Config): Pair<Int, Int> {
     val ty = top + (y - 1) * (spacing shr 4)
     val shown = tx < 20 && ty < 18 && u8(r.readCoreMemory(cfg.tileMap + ty * 20 + tx, 1), 0) == cfg.cursorTile
     if (!shown) return BATTLE_INPUT_BUSY to -1
-    if (top == BATTLE_MENU_TOP && left == cfg.battleMenuLeft && rows == 2 && cols == 2) {
+    if (top == BATTLE_MENU_TOP && left == BATTLE_MENU_LEFT && rows == 2 && cols == 2) {
         return BATTLE_INPUT_ACTION_SELECT to (x - 1) + 2 * (y - 1)
     }
     if (top == MOVE_MENU_TOP && left == MOVE_MENU_LEFT && cols == 1 && rows in 1..4 &&
@@ -536,7 +523,7 @@ fun readGen2Telemetry(r: MemoryReader, cfg: Gen2Config): Telemetry {
     val party = (0 until count).mapIndexedNotNull { i, _ ->
         val mon = if (cfg.polished) decodePolishedPartyMon(partyRaw, i * GEN2_PARTY_MON_SIZE, cfg)
         else decodeGen2PartyMon(partyRaw, i * GEN2_PARTY_MON_SIZE, cfg, egg = u8(countRaw, 1 + i) == GEN2_EGG)
-        mon?.copy(nickname = gen2Nickname(nicknames, i * GEN2_NAME_LEN, cfg.polished, cfg.language))
+        mon?.copy(nickname = gen2Nickname(nicknames, i * GEN2_NAME_LEN, cfg.polished))
     }
 
     val items = readGen2Bag(r, cfg)
