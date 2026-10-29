@@ -3,7 +3,7 @@ title: Supported games
 summary: Which games the companion can read, how to check your ROM, and what happens with a hack or version PokeDaisy doesn't know.
 section: help
 order: 1
-keywords: [nds, nintendo ds, platinum, heartgold, soulsilver, compatibility, compatible, rom hack, hacks, version, sha1, sha-1, checksum, unsupported, best effort, partially supported, request]
+keywords: [nds, nintendo ds, platinum, heartgold, soulsilver, black, unova, gen 5, purered, pureblue, purergb, compatibility, compatible, rom hack, hacks, version, sha1, sha-1, checksum, unsupported, best effort, partially supported, request]
 ---
 
 Any GBA, Game Boy or DS game plays in PokeDaisy. "Supported" is about the companion on the bottom screen: to show your party, bag, map and battles, it has to know exactly which game you're running and where that game keeps its data. A game it doesn't know still plays fine on the top screen; the companion shows a notice instead of your party.
@@ -18,23 +18,23 @@ Any GBA, Game Boy or DS game plays in PokeDaisy. "Supported" is about the compan
 
 **Game Boy and Game Boy Color:**
 
-- Pokémon Red and Blue: the USA / Europe and German releases, drawn in the game's own look: the colours they show on a Super Game Boy.
+- Pokémon Red and Blue: the USA / Europe releases, drawn in the game's own look: the colours they show on a Super Game Boy.
+- PureRed and PureBlue, the PureRGB hack of Red and Blue: version 2.7.6, drawn in the game's own look (the colours of its default OG setting), with its own types, moves, items, places and Pokédex. A save from the original Red or Blue works too, once the game itself has updated it: pick CONTINUE and answer its questions.
 - Pokémon Yellow: the USA / Europe release and the German, French, Italian and Spanish ones, drawn in the game's own look. A German, French, Italian or Spanish copy shows its own names and Pokédex text. Item descriptions are only shown in the English one, as these games have none of their own.
-- Pokémon Gold and Silver: the USA / Europe and German releases, drawn in the game's own look.
-- Pokémon Crystal: the USA release, the USA / Europe revision 1, the Australian one and the German release, drawn in the game's own look.
+- Pokémon Gold and Silver: the USA / Europe releases, drawn in the game's own look.
+- Pokémon Crystal: the USA release, the USA / Europe revision 1 and the Australian one, drawn in the game's own look.
 - Pokémon Crystal Clear, the open world hack of Crystal: versions 2.5.11 and 2.6.0, each in its Standard Colors and its Color Filter build, drawn in the game's own look.
 - Pokémon Prism, built on Crystal with regions of its own: version 0.95 build 254 (Hotfix 5), drawn in the game's own look, with its own Pokédex.
 - Polished Crystal: versions 3.2.0 to 3.2.3, each in its normal and its faithful build (and their debug builds), drawn in the game's own look, with its own Pokédex. The faithful builds keep the original types and moves, and the companion shows them that way.
 
-German Game Boy copies show their own names, font and metric Pokédex pages. Gold and Silver appear under GBC in the library, including their German releases.
-
 **Nintendo DS:**
 
-- Pokémon Platinum: the USA release (revision 1) and the German release (revision 0).
+- Pokémon Platinum: the USA release, revision 1.
 - Pokémon HeartGold: the USA and German releases (revision 0).
 - Pokémon SoulSilver: the USA and German releases (revision 0).
+- Pokémon Black: the USA / Europe release.
 
-The companion reads their party, bag, map, Pokédex and guide, with pictures, Pokédex pages and the map read from your cart. Platinum's battles show in the `BATTLE` tab; HeartGold's and SoulSilver's don't yet. [Screens and devices](devices.md#ds-games) has how a DS game uses your screens.
+The companion reads their party, bag, map, Pokédex and guide, with pictures, Pokédex pages and the map read from your cart. Platinum's and Black's battles show in the `BATTLE` tab; HeartGold's and SoulSilver's don't yet. Black's `MAP` is the game's own Town Map: the towns you've arrived at in blue, the others grey, as the game shows them. `PARTY`, `BAG` and `DEX` take each game's own colours: Black's cut-corner slots on its navy grid and its green Pokédex grid, Platinum's blue slots on slate stripes. [Screens and devices](devices.md#ds-games) has how a DS game uses your screens.
 
 **ROM hacks**, each in the versions listed:
 
@@ -68,6 +68,8 @@ The companion reads their party, bag, map, Pokédex and guide, with pictures, Po
 | Pokémon Recharged Emerald | 2.2.5 and 2.2.8, and Rebalanced 2.2.8 |
 | Pokémon Elite Redux | 2.65.3b and 2.65.4.1b |
 | Pokémon Team Rocket Edition: Dragonsden Version | 1.5 (its START menu shows the version) |
+| Pokémon Wishes of Tomorrow | 1.2.6 |
+| Pokémon Dreamstone Mysteries | its one release (the game shows no version) |
 | Emerald Rogue | 2.2.1-EX |
 | Pokémon SoulGold | 1.1.4, and three builds of 1.2 |
 | Pokémon R.O.W.E. | 2.1.9.1 Experimental |

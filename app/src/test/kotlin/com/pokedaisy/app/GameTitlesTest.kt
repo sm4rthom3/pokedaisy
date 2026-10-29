@@ -11,21 +11,6 @@ import java.io.File
 
 class GameTitlesTest {
     @Test
-    fun `German dual-mode Gold and Silver stay GBC even with a gb extension`() {
-        val rom = File.createTempFile("dual-mode-", ".gb")
-        try {
-            rom.writeBytes(ByteArray(0x160).apply {
-                byteArrayOf(0xCE.toByte(), 0xED.toByte(), 0x66, 0x66).copyInto(this, 0x104)
-                this[0x143] = 0x80.toByte()
-            })
-            for (hash in listOf(TelemetrySampler.GOLD_DE_SHA1, TelemetrySampler.SILVER_DE_SHA1)) {
-                assertEquals(RomCategory.GBC, GameTitles.platformOf(rom) { hash })
-            }
-            assertEquals(RomCategory.GB, GameTitles.platformOf(rom) { TelemetrySampler.YELLOW_DE_SHA1 })
-        } finally { rom.delete() }
-    }
-
-    @Test
     fun `every hack the companion supports has a name`() {
         val missing = TelemetrySampler.SUPPORTED_HACK_SHA1S - GameTitles.BY_SHA1.keys
         assertTrue("no title for $missing", missing.isEmpty())

@@ -31,8 +31,7 @@ object GameTitles {
     /** The DS carts [BY_SHA1] names (the website's ROM check reads DS carts by their header: compat.json's `ds`). */
     internal val NDS_SHA1S = setOf(
         "0862ec35b24de5c7e2dcb88c9eea0873110d755c", "4fcded0e2713dc03929845de631d0932ea2b5a37", "f8dc38ea20c17541a43b58c5e6d18c1732c7e582",
-        "13b6853aa93121069df1d17446d3ecb36872aecf",
-        "576cdb7eec728c49aed85b9dd7e1e084ba1f08f9", "d40f19ac24d67c721a4ab25e1c013154443d75b4",
+        "13b6853aa93121069df1d17446d3ecb36872aecf", "576cdb7eec728c49aed85b9dd7e1e084ba1f08f9",
     )
 
     private val RETAIL: Map<String, String> = mapOf(
@@ -48,7 +47,8 @@ object GameTitles {
         "f8dc38ea20c17541a43b58c5e6d18c1732c7e582" to "Pokémon SoulSilver",
         "13b6853aa93121069df1d17446d3ecb36872aecf" to "Pokémon Goldene Edition HeartGold",
         "576cdb7eec728c49aed85b9dd7e1e084ba1f08f9" to "Pokémon Silberne Edition SoulSilver",
-        "d40f19ac24d67c721a4ab25e1c013154443d75b4" to "Pokémon Platin-Edition",
+        // Black (USA, Europe): the No-Intro dump (no decomp builds it).
+        "26ad0b9967aa279c4a266ee69f52b9b2332399a5" to "Pokémon Black",
         // The other Emeralds, by their own titles (No-Intro's dumps; no decomp builds them).
         "fe1558a3dcb0360ab558969e09b690888b846dd9" to "Pokémon Edición Esmeralda",
         "61c2eb2b380b1a75f0c94b767a2d4c26cd7ce4e3" to "Pokémon Smaragd-Edition",
@@ -70,11 +70,6 @@ object GameTitles {
         // pret/pokered's roms.sha1 (Blue: the build stands in for the cart).
         "ea9bcae617fdf159b045185467ae58b2e4a48b9a" to "Pokémon Red",
         "d7037c83e1ae5b39bde3c30787637ba1d4c48ce2" to "Pokémon Blue",
-        "87d523fe1a0c548db7c5477b451ddec1eb083c06" to "Pokémon Rote Edition",
-        "20e72dc6f41493eee1fdd0cef54214e6c3389688" to "Pokémon Blaue Edition",
-        "9254195d461ea942eaaa08cc4b83de3cf82aea0d" to "Pokémon Goldene Edition",
-        "8ecc58d621faaedf2a934bd2583d527220df7bb9" to "Pokémon Silberne Edition",
-        "accb584293ba056152f1fd908439b019017ff2fe" to "Pokémon Kristall-Edition",
         // Game Boy Color (pret/pokecrystal's roms.sha1): rev 0, rev 1, Australia.
         "f4cd194bdee0d04ca4eac29e09b8e4e9d818c133" to "Pokémon Crystal",
         "f2f52230b536214ef7c9924f483392993e226cfb" to "Pokémon Crystal",
@@ -126,6 +121,8 @@ object GameTitles {
         "5b38a681b6924ef3e0bb9f6cfbf22426c4c4e523" to "Pokémon Elite Redux",
         "2f3e17e55c6afe23da97ec0f96a067eeb142ad15" to "Pokémon Elite Redux",
         "40780347d0b4df6bf491eaf12603e5422caee677" to "Pokémon Team Rocket Edition: Dragonsden Version",
+        "60182b934d2e8eb3eef226a9bbc25e5df6becd4f" to "Pokémon Wishes of Tomorrow",
+        "20e91aecb3243eea7cd610659846f37062f5d709" to "Pokémon Dreamstone Mysteries",
         "20dfaea1d5317cf95fe0b493208edce7d50b865f" to "Pokémon Ghost Grey",
         "74337272566a74625d6dedefe47d2d153eb48ec1" to "Pokémon Ghost Grey",
         "0dafc0116b74406a2df491e26ccb40dd362fb0b7" to "Pokémon Ghost Grey",
@@ -170,10 +167,13 @@ object GameTitles {
         "772858dd5a3e66dea4454d5f83b48c83d732ca69" to "Pokémon Polished Crystal",
         "c4bd263e58325c6c04c34462c1b4a37fba085e9c" to "Pokémon Polished Crystal",
         "c0a2c70d73ce68830a891ddd292300c90766acdd" to "Pokémon Polished Crystal",
+        // PureRed / PureBlue v2.7.6 (Vortyne/pureRGB builds both byte for byte).
+        "2e94d09c1e16a57eb079404c030f26fdeeac949d" to "Pokémon PureRed",
+        "d419fe244fa17196f7df46ddab47c840e7573652" to "Pokémon PureBlue",
     )
 
     /** DS carts worth hashing (128 MB each, once per file): the DS games above. */
-    private val NDS_CODES = setOf("CPUE", "CPUD", "IPKE", "IPKD", "IPGE", "IPGD")
+    private val NDS_CODES = setOf("CPUE", "IPKE", "IPKD", "IPGE", "IPGD", "IRBO")
 
     /** Only these games' ROMs (and Game Boy carts) are worth hashing: every entry above is one of them. */
     private val CODES = setOf("BPRE", "BPGE", "BPEE", "AXVE", "AXPE") + EMERALD_LOCALIZED_CODES +
@@ -232,10 +232,7 @@ object GameTitles {
 
     /** Color games with a dual-mode header (0x80) that the companion knows. Yellow says the same but is a GB game. */
     private val COLOR_DUAL: Set<String>
-        get() = TelemetrySampler.POLISHED_CRYSTAL_SHA1S + setOf(
-            TelemetrySampler.GOLD_SHA1, TelemetrySampler.SILVER_SHA1,
-            TelemetrySampler.GOLD_DE_SHA1, TelemetrySampler.SILVER_DE_SHA1,
-        )
+        get() = TelemetrySampler.POLISHED_CRYSTAL_SHA1S + TelemetrySampler.GOLD_SHA1 + TelemetrySampler.SILVER_SHA1
 
     /** [rom]'s [RomCategory] (reads its header; [sha1] when [identify] hashed it). A Pokémon cart hashed but known as
      * neither retail nor a hack is a hack too (an unsupported one); a cart nobody hashes is its platform's. */

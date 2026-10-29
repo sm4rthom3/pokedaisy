@@ -24,13 +24,16 @@ object Gen1Art {
     const val YELLOW_PLAYER = "regionmap/player_yellow.png"
     /** The town map, where MapScreen loads region maps from ([activeRegionMapImages] "yellow"). */
     const val YELLOW_TOWN_MAP = "regionmap/yellow.png"
-    const val RED_BLUE_FONT_DE = "gen1/red-blue-font-d.ttf"
     const val RED_BLUE_FONT = "gen1/red-blue-font.ttf"
     const val RED_BLUE_ICONS = "gen1/red_blue/pokemon"
     /** Red / Blue's town map and player ([activeRegionMapImages] "red_blue"), in their Super Game Boy colours. */
     const val RED_BLUE_TOWN_MAP_NAME = "red_blue"
     const val RED_BLUE_TOWN_MAP = "regionmap/$RED_BLUE_TOWN_MAP_NAME.png"
     const val RED_BLUE_PLAYER = "regionmap/player_red_blue.png"
+    /** PureRed / PureBlue: one font, the icons, town map and player in each one's colours ("pure_red" / "pure_blue"). */
+    const val PURE_FONT = "gen1/pure-font.ttf"
+    fun pureTownMapName(game: GameKind?): String = if (game == GameKind.PURE_BLUE) "pure_blue" else "pure_red"
+    fun pureIcons(game: GameKind?): String = "gen1/${pureTownMapName(game)}/pokemon"
     /** Bump when what [extractTo] writes changes, so a cached ROM's art is rebuilt once. */
     private const val VERSION = 3
 
@@ -57,6 +60,9 @@ object Gen1Art {
         val charset: Gen1Charset = Gen1Charset.EN,
         /** The player's colours for pixel values 0-3 when the sprite's palette isn't the map's (null: [townMapColors]). */
         val playerColors: IntArray? = null,
+        /** PureRGB's party icons: a sheet of 8 tiles per icon (PartyMonSprites1, 32 px wide: frame 1 on the left, frame 2
+         * on the right, no mirroring), [monPartyData] a byte per Dex number from MISSINGNO. at 0 ([icons]). */
+        val iconSheet: Pair<Int, Int>? = null,
     )
 
     val YELLOW = Gen1ArtTables(
@@ -105,32 +111,60 @@ object Gen1Art {
      * there is white, light blue and black (FLY's map, headless). Their party icons have no PIKACHU shape: 14
      * icon loads a frame.
      */
-    private fun redBlue(sha1: String, german: Boolean = false) = Gen1ArtTables(
+    private fun redBlue(sha1: String) = Gen1ArtTables(
         sha1 = sha1,
         font = 0x04 to 0x5A80,
-        fontPath = if (german) RED_BLUE_FONT_DE else RED_BLUE_FONT,
-        iconPointers = 0x1C to if (german) 0x579A else 0x57C0,
+        fontPath = RED_BLUE_FONT,
+        iconPointers = 0x1C to 0x57C0,
         iconPointerCount = 28,
-        monPartyData = 0x1C to if (german) 0x58E7 else 0x590D,
+        monPartyData = 0x1C to 0x590D,
         dexCount = 151,
         iconsDir = RED_BLUE_ICONS,
         iconColors = intArrayOf(0xFFFFEFFF.toInt(), 0xFFF7B58C.toInt(), 0xFF181010.toInt()),
-        townMap = 0x1C to if (german) 0x50FE else 0x5100,
-        townMapTiles = 0x04 to if (german) 0x65B8 else 0x65A8,
+        townMap = 0x1C to 0x5100,
+        townMapTiles = 0x04 to 0x65A8,
         townMapPath = RED_BLUE_TOWN_MAP,
         townMapColors = intArrayOf(0xFFFFEFFF.toInt(), 0xFFA5D6FF.toInt(), 0xFF8CBD52.toInt(), 0xFF181010.toInt()),
         playerSprite = 0x05 to 0x4180,
         playerPath = RED_BLUE_PLAYER,
-        charset = if (german) Gen1Charset.DF else Gen1Charset.EN,
         playerColors = intArrayOf(0, 0xFFFFEFFF.toInt(), 0xFFA5D6FF.toInt(), 0xFF181010.toInt()),
     )
     val RED = redBlue(TelemetrySampler.RED_SHA1)
     val BLUE = redBlue(TelemetrySampler.BLUE_SHA1)
 
-    val RED_DE = redBlue(TelemetrySampler.RED_DE_SHA1, german = true)
-    val BLUE_DE = redBlue(TelemetrySampler.BLUE_DE_SHA1, german = true)
+    /**
+     * PureRed and PureBlue v2.7.6 (pureRGB's pokered.sym: the same addresses in both). A Color cart, its default COLORS
+     * (OG) the Color's own two-tone palettes for the original carts, sampled headless: PureRed's screens white / pink /
+     * dark red / black with green sprites, PureBlue's white / light blue / blue / black with pink ones. Its party icons are
+     * its own ([Gen1ArtTables.iconSheet]: the ICONS option's OG set, MonPartyData); the font, town map and player are
+     * pokered's art at its own addresses.
+     */
+    private fun pure(sha1: String, name: String, sprite: Int, map: IntArray) = Gen1ArtTables(
+        sha1 = sha1,
+        font = 0x04 to 0x5F00,
+        fontPath = PURE_FONT,
+        iconPointers = 0 to 0,
+        iconPointerCount = 0,
+        monPartyData = 0x35 to 0x5318,
+        dexCount = 151,
+        iconsDir = "gen1/$name/pokemon",
+        iconColors = intArrayOf(0xFFFFFFFF.toInt(), sprite, 0xFF000000.toInt()),
+        townMap = 0x1C to 0x4BBD,
+        townMapTiles = 0x04 to 0x6A28,
+        townMapPath = "regionmap/$name.png",
+        townMapColors = map,
+        playerSprite = 0x05 to 0x4180,
+        playerPath = "regionmap/player_$name.png",
+        charset = Gen1Charset.PURE,
+        playerColors = intArrayOf(0, 0xFFFFFFFF.toInt(), sprite, 0xFF000000.toInt()),
+        iconSheet = 0x34 to 0x4000,
+    )
+    val PURE_RED = pure(TelemetrySampler.PURE_RED_V2_7_6_SHA1, "pure_red", 0xFF7BFF31.toInt(),
+        intArrayOf(0xFFFFFFFF.toInt(), 0xFFFF8484.toInt(), 0xFF943939.toInt(), 0xFF000000.toInt()))
+    val PURE_BLUE = pure(TelemetrySampler.PURE_BLUE_V2_7_6_SHA1, "pure_blue", 0xFFFF8484.toInt(),
+        intArrayOf(0xFFFFFFFF.toInt(), 0xFF63A5FF.toInt(), 0xFF0000FF.toInt(), 0xFF000000.toInt()))
 
-    private val GAMES = listOf(YELLOW, YELLOW_DE, YELLOW_FR, YELLOW_IT, YELLOW_ES, RED, BLUE, RED_DE, BLUE_DE)
+    private val GAMES = listOf(YELLOW, YELLOW_DE, YELLOW_FR, YELLOW_IT, YELLOW_ES, RED, BLUE, PURE_RED, PURE_BLUE)
 
     private fun off(bank: Int, addr: Int) = if (bank == 0) addr else bank * 0x4000 + (addr - 0x4000)
 
@@ -156,6 +190,7 @@ object Gen1Art {
      * 4 tiles are drawn as they are).
      */
     fun icons(rom: ByteArray, t: Gen1ArtTables): Map<Int, RomArt.Image> {
+        t.iconSheet?.let { return pureIcons(rom, t, it) }
         val vram = HashMap<Int, ByteArray>()
         val ptrBase = off(t.iconPointers.first, t.iconPointers.second)
         for (e in 0 until t.iconPointerCount) {
@@ -193,6 +228,27 @@ object Gen1Art {
             RomArt.Image(16, 32).also { img ->
                 frame(img, type shl 2, type == ICON_HELIX, 0)
                 frame(img, ICON_OFFSET + (type shl 2), type == ICON_HELIX, 16)
+            }
+        }
+    }
+
+    /**
+     * PureRGB's icons (engine/gfx/mon_icons2.asm): GetPartyMonSpriteID's MonPartyData[Dex number] picks an icon, whose 8
+     * tiles are copied as they are - OAM draws tiles 0, 1 over 4, 5 and the second frame two tiles on (2, 3 over 6, 7).
+     */
+    private fun pureIcons(rom: ByteArray, t: Gen1ArtTables, sheet: Pair<Int, Int>): Map<Int, RomArt.Image> {
+        val base = off(sheet.first, sheet.second)
+        val ids = off(t.monPartyData.first, t.monPartyData.second)
+        return (1..t.dexCount).associateWith { dex ->
+            val icon = base + 0x80 * (rom[ids + dex].toInt() and 0xFF)
+            RomArt.Image(16, 32).also { img ->
+                for (frame in 0 until 2) for (y in 0 until 16) for (x in 0 until 16) {
+                    val tile = icon + 16 * ((y / 8) * 4 + frame * 2 + x / 8)
+                    val lo = rom[tile + 2 * (y % 8)].toInt() shr (7 - x % 8) and 1
+                    val hi = rom[tile + 2 * (y % 8) + 1].toInt() shr (7 - x % 8) and 1
+                    val v = lo or (hi shl 1)
+                    if (v != 0) img.argb[(frame * 16 + y) * 16 + x] = t.iconColors[v - 1]
+                }
             }
         }
     }

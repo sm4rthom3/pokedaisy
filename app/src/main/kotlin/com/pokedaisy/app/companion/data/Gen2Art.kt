@@ -21,7 +21,6 @@ object Gen2Art {
     const val EGG = 0xFD
     private const val UNOWN = 201
 
-    const val CRYSTAL_FONT_DE = "gen2/crystal-font-d.ttf"
     const val CRYSTAL_FONT = "gen2/crystal-font.ttf"
     const val CRYSTAL_ICONS = "gen2/crystal/pokemon"
     /** The held-item marks, 8x16: an item over Mail (PartyScreen's HeldItemMarker reads RomArt.HOLD_ICONS' layout). */
@@ -32,7 +31,6 @@ object Gen2Art {
     const val CRYSTAL_PLAYER = "player_chris"
     const val CRYSTAL_PLAYER_F = "player_kris"
 
-    const val GOLD_SILVER_FONT_DE = "gen2/gold-silver-font-d.ttf"
     const val GOLD_SILVER_FONT = "gen2/gold-silver-font.ttf"
     const val GOLD_SILVER_ICONS = "gen2/gold_silver/pokemon"
     const val GOLD_SILVER_HOLD_ICONS = "gen2/gold_silver/hold_icons.png"
@@ -62,7 +60,7 @@ object Gen2Art {
     private const val VERSION = 4
 
     /** Where a Gen 2 game's own art sits in its ROM (bank, address). */
-    data class Gen2ArtTables(
+    class Gen2ArtTables(
         val name: String,                     // the art's family: [extractTo] keeps which build it holds
         val sha1s: Set<String>,
         val font: Pair<Int, Int>,             // Font: tiles 0x80-0xFF, 1bpp
@@ -113,20 +111,6 @@ object Gen2Art {
         val playerLz: Boolean = false,
         val playerPalFrom: Int = 8,
     )
-
-    /** The game's text characters for its font tiles 0x80-0xFF (constants/charmap.asm) the companion prints. */
-    private val CHARS: Map<Int, Char> = buildMap {
-        for (i in 0 until 26) { put(0x80 + i, 'A' + i); put(0xA0 + i, 'a' + i) }
-        for (i in 0 until 10) put(0xF6 + i, '0' + i)
-        putAll(mapOf(
-            0x9A to '(', 0x9B to ')', 0x9C to ':', 0x9D to ';', 0x9E to '[', 0x9F to ']', 0xC0 to 'Ä', 0xC1 to 'Ö',
-            0xC2 to 'Ü', 0xC3 to 'ä', 0xC4 to 'ö', 0xC5 to 'ü', 0xE0 to '\'', 0xE3 to '-', 0xE6 to '?', 0xE7 to '!',
-            0xE8 to '.', 0xE9 to '&', 0xEA to 'é', 0xEB to '→', 0xEC to '▷', 0xED to '▶', 0xEE to '▼', 0xEF to '♂',
-            0xF0 to '¥', 0xF1 to '×', 0xF3 to '/', 0xF4 to ',', 0xF5 to '♀',
-        ))
-    }
-
-    private val GERMAN_CHARS = CHARS + mapOf(0xBE to 'ß')
 
     val CRYSTAL = Gen2ArtTables(
         name = "crystal",
@@ -185,22 +169,6 @@ object Gen2Art {
             it.pokegearPals, it.townMapPaths, it.playerSprites, it.objectPals, it.playerPaths,
         )
     }
-
-    val GOLD_DE = GOLD.copy(
-        sha1s = setOf(TelemetrySampler.GOLD_DE_SHA1), fontPath = GOLD_SILVER_FONT_DE,
-        icons = 0x23 to 0x6A72, monMenuIcons = 0x23 to 0x6977, heldItemIcons = 0x23 to 0x68DD,
-        townMaps = listOf(0x24 to 0x5F84, 0x24 to 0x60ED), townMapPalMap = 0x24 to 0x5EDE,
-        chars = GERMAN_CHARS,
-    )
-    val SILVER_DE = GOLD_DE.copy(
-        sha1s = setOf(TelemetrySampler.SILVER_DE_SHA1),
-        icons = 0x23 to 0x6A58, monMenuIcons = 0x23 to 0x695D, heldItemIcons = 0x23 to 0x68C3,
-    )
-    val CRYSTAL_DE = CRYSTAL.copy(
-        sha1s = setOf(TelemetrySampler.CRYSTAL_DE_SHA1), fontPath = CRYSTAL_FONT_DE,
-        townMaps = listOf(0x24 to 0x601E, 0x24 to 0x6187), townMapPalMap = 0x24 to 0x5F6A,
-        chars = GERMAN_CHARS,
-    )
 
     /**
      * Crystal Clear v2.6.0, both builds: Crystal's art moved (the town maps' and font's bytes where Crystal has them,
@@ -322,14 +290,22 @@ object Gen2Art {
         )
     }
 
-    private val GAMES = listOf(CRYSTAL, GOLD, SILVER, CRYSTAL_DE, GOLD_DE, SILVER_DE, CRYSTAL_CLEAR_V2_6_0, CRYSTAL_CLEAR_V2_5_11, PRISM) + POLISHED_CRYSTAL
+    private val GAMES = listOf(CRYSTAL, GOLD, SILVER, CRYSTAL_CLEAR_V2_6_0, CRYSTAL_CLEAR_V2_5_11, PRISM) + POLISHED_CRYSTAL
 
-    /** The game's text characters for its font tiles 0x80-0xFF, shared by its font and nicknames. */
-    internal fun chars(polished: Boolean, language: Char = 'E'): Map<Int, Char> = when {
-        polished -> POLISHED_CHARS
-        language == 'D' -> GERMAN_CHARS
-        else -> CHARS
+    /** The game's text characters for its font tiles 0x80-0xFF (constants/charmap.asm) the companion prints. */
+    private val CHARS: Map<Int, Char> = buildMap {
+        for (i in 0 until 26) { put(0x80 + i, 'A' + i); put(0xA0 + i, 'a' + i) }
+        for (i in 0 until 10) put(0xF6 + i, '0' + i)
+        putAll(mapOf(
+            0x9A to '(', 0x9B to ')', 0x9C to ':', 0x9D to ';', 0x9E to '[', 0x9F to ']', 0xC0 to 'Ä', 0xC1 to 'Ö',
+            0xC2 to 'Ü', 0xC3 to 'ä', 0xC4 to 'ö', 0xC5 to 'ü', 0xE0 to '\'', 0xE3 to '-', 0xE6 to '?', 0xE7 to '!',
+            0xE8 to '.', 0xE9 to '&', 0xEA to 'é', 0xEB to '→', 0xEC to '▷', 0xED to '▶', 0xEE to '▼', 0xEF to '♂',
+            0xF0 to '¥', 0xF1 to '×', 0xF3 to '/', 0xF4 to ',', 0xF5 to '♀',
+        ))
     }
+
+    /** [CHARS] or [POLISHED_CHARS]: the game's text characters for its font tiles 0x80-0xFF. */
+    internal fun chars(polished: Boolean): Map<Int, Char> = if (polished) POLISHED_CHARS else CHARS
 
     private fun off(bank: Int, addr: Int) = if (bank == 0) addr else bank * 0x4000 + (addr - 0x4000)
     private fun u8(b: ByteArray, o: Int) = b[o].toInt() and 0xFF
