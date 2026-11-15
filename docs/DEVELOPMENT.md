@@ -3205,7 +3205,7 @@ RetroAchievements' views are the file.
 
 ## Nintendo DS (melonDS)
 
-Platinum (USA rev 1, `CPUE`; France rev 0, `CPUF`), HeartGold / SoulSilver (USA, Germany and France rev 0, `IPKE` / `IPGE` / `IPKD` / `IPGD` /
+Platinum (USA rev 1, `CPUE`; France rev 0, `CPUF`; Spain `CPUS` and Germany `CPUD`, rev 0), HeartGold / SoulSilver (USA, Germany and France rev 0, `IPKE` / `IPGE` / `IPKD` / `IPGD` /
 `IPKF` / `IPGF`), Black / White (USA / Europe, `IRBO` / `IRAO`; France, `IRBF` / `IRAF`) and Black 2 / White 2 (USA / Europe, `IREO` / `IRDO`;
 the Gen 5 carts are DSi enhanced and run in DS mode) run on melonDS, with the companion, EXPAND and STEADY music.
 
@@ -3308,7 +3308,7 @@ covers it). Spanish White and Korean White share Black's addresses outright. **S
 brought a third base, `platinum` (`PK_NDS_PORTS4P`: the USA rev 1 field / call tables, callSet 300 + n; its party and options
 are top-screen pages, so no X menu task is listed): its functions are the French cart's, at the same addresses, its globals and
 field overlays 0x20 above French's. No Platinum save is kept here, so it was proven on a new game played in it headless (the
-intro's yes / no and the Poké Ball are touches): the field read, the save and field pointers, PC anywhere. **Japanese and Korean carts**: the US saves load in all of them but Korean HeartGold /
+intro's yes / no and the Poké Ball are touches): the field read, the save and field pointers, PC anywhere. **German Platinum** (`CPUD` rev 0, SHA-1 `d40f19ac…`, 2026-11-15): the same functions again, its globals and field overlay 0x40 below French's (0x60 below Spanish's), the battle template 0x30 below French's; all 24 words resolved by `port_nds_fns.py` against the USA rev 1 cart, then checked on a new game played headless (Rowan's intro: A for text, a touch on JA, the list menu's KEINE INFOS MEHR by the D-pad, the Poké Ball's inner button at (128, 84), name entry confirmed by START): `fieldinfo`'s pointers equal `sFieldSystem`'s word, the save pointer, the sound system's signature and the battle template's handlers read right, PC anywhere ran. On an AYN Thor the same new game ran at 60 fps (library title, the HUD's German place name, its PC button opening the game's box screen). A save with a party (three Pokémon built in RAM with `Gen4`'s block shuffle and checksums, eight badges, `GivePokedex`, the starter var; saved through SICHERN and booted from the title) then ran the X menu and party page, EXPAND outdoors, the WILDE list, FLIEGEN and the flight on the Thor. A wild battle came from surfing on Twinleaf's pond (Route 201 waits for the story); the BATTLE tab's moves, INFO and TIPPS read it on the Thor, a move picked from the companion's buttons ran, and DEX, MAP, GUIDE and the bag (a Repel used: 100 steps) read the German cart. The same save built for the USA rev 1 cart (SaveData at 0x0227E164) shows the HUD over the X menu the same way, so that isn't German-specific. `HeartGoldGermanTest` no longer lists `CPUD` as unsupported. **Japanese and Korean carts**: the US saves load in all of them but Korean HeartGold /
 SoulSilver, whose save footer's magic is 0x20070903 (the US / Japanese carts' 0x20060623, outside the checksums: change the word
 and the US save loads). Japanese HeartGold / SoulSilver's X menu, options and Pokédex differ in code (the tool leaves them
 UNRESOLVED): read off the running game (the X menu's field task +4, each page's child init). Their text banks are numbered their own
