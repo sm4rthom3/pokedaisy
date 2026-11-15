@@ -267,3 +267,13 @@ FieldSystem_CreateTask       c 0x020504F1       0x020504E9
 ScriptEnvironment_New        c 0x0204001D       0x02040015
 CreateScriptContext          c 0x020400AD       0x020400A5
 Task_RunScripts              c 0x0203FF45       0x0203FF3D
+
+# German Platinum (CPUD rev 0, gamedata/nds/ports.toml): US rev 1 -> German, the words checked live on a new game played headless
+# (the field read's pointers, the save, sound and battle template words; PC anywhere ran). The functions equal French's.
+[platinum_de]
+us = Pokemon - Platinum Version (USA) (Rev 1).nds
+other = Pokemon - Platin-Edition (Germany).nds
+sFieldSystem                 w 0x021C07DC     0x021C097C
+gBattleApplicationTemplate   w 0x020EA358     0x020EA3B0
+sSoundSystem                 w 0x02101DF8     0x02101F98
+sSaveDataPtr                 w 0x021C0794     0x021C0934
